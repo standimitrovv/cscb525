@@ -30,6 +30,7 @@ enum Months {
 @NoArgsConstructor
 public class CompanyRevenue {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name="for_month", nullable = false)
