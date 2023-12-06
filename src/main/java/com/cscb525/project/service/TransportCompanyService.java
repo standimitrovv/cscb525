@@ -13,5 +13,7 @@ public interface TransportCompanyService {
 
     TransportCompanyDtoResponse addTransportCompany(TransportCompanyDto transportCompany);
 
+    TransportCompanyDtoResponse updateTransportCompany(TransportCompanyDto transportCompanyDto, Integer companyId);
+
     void deleteTransportCompany(Integer companyId);
 }

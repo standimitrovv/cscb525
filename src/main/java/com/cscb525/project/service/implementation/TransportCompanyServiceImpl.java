@@ -37,8 +37,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
     }
 
     public TransportCompanyDtoResponse getTransportCompany(Integer companyId){
-        TransportCompany transportCompany = this.transportCompanyRepository.findById(companyId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        TransportCompany transportCompany = this.findTransportCompanyByIdOrThrow(companyId);
 
         return modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
     }
@@ -53,10 +52,25 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return modelMapper.map(transportCompanyToAdd, TransportCompanyDtoResponse.class);
     }
 
+    public TransportCompanyDtoResponse updateTransportCompany(TransportCompanyDto transportCompanyDto, Integer companyId){
+        TransportCompany transportCompany = this.findTransportCompanyByIdOrThrow(companyId);
+
+        transportCompany.setName(transportCompanyDto.getName());
+
+        TransportCompany newTransportCompany = this.transportCompanyRepository.save(transportCompany);
+
+        return modelMapper.map(newTransportCompany, TransportCompanyDtoResponse.class);
+    }
+
     public void deleteTransportCompany(Integer companyId) {
         this.transportCompanyRepository.findById(companyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         this.transportCompanyRepository.deleteById(companyId);
+    }
+
+    private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
+        return this.transportCompanyRepository.findById(companyId)
+                .orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND)));
     }
 }

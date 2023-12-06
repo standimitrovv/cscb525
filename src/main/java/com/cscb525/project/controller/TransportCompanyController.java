@@ -35,6 +35,14 @@ public class TransportCompanyController {
         return this.transportCompanyServiceImpl.addTransportCompany(transportCompany);
     }
 
+    @PatchMapping("/{companyId}")
+    public TransportCompanyDtoResponse updateTransportCompany(
+            @RequestBody @Valid TransportCompanyDto transportCompanyDto,
+            @PathVariable Integer companyId){
+        return this.transportCompanyServiceImpl.updateTransportCompany(transportCompanyDto, companyId);
+    }
+
+
     @DeleteMapping("/{companyId}")
     public ResponseEntity<Void> deleteTransportCompany(@PathVariable Integer companyId) {
         this.transportCompanyServiceImpl.deleteTransportCompany(companyId);
