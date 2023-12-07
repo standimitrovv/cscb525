@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TransportCompanyRevenueDto {
     @NotBlank
-    private Months month;
+    private Months forMonth;
 
     @NotBlank
     private double revenue;

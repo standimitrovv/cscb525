@@ -2,10 +2,13 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.TransportCompanyDto;
 import com.cscb525.project.dto.TransportCompanyDtoResponse;
+import com.cscb525.project.dto.TransportCompanyRevenueDto;
 import com.cscb525.project.model.Client;
 import com.cscb525.project.model.TransportCompany;
+import com.cscb525.project.model.TransportCompanyRevenue;
 import com.cscb525.project.repository.ClientRepository;
 import com.cscb525.project.repository.TransportCompanyRepository;
+import com.cscb525.project.repository.TransportCompanyRevenueRepository;
 import com.cscb525.project.service.TransportCompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +27,19 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     private final ClientRepository clientRepository;
 
+    private final TransportCompanyRevenueRepository transportCompanyRevenueRepository;
+
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TransportCompanyServiceImpl(TransportCompanyRepository transportCompanyRepository, ClientRepository clientRepository){
+    public TransportCompanyServiceImpl(
+            TransportCompanyRepository transportCompanyRepository,
+            ClientRepository clientRepository,
+            TransportCompanyRevenueRepository transportCompanyRevenueRepository
+    ){
         this.transportCompanyRepository = transportCompanyRepository;
         this.clientRepository = clientRepository;
+        this.transportCompanyRevenueRepository = transportCompanyRevenueRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -105,6 +115,22 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
         this.transportCompanyRepository.save(transportCompany);
     };
+
+    public TransportCompanyDtoResponse addCompanyRevenue(Integer companyId, TransportCompanyRevenueDto revenueDto){
+        TransportCompanyRevenue transportCompanyRevenue = this.modelMapper.map(revenueDto, TransportCompanyRevenue.class);
+
+        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
+
+        transportCompany.getRevenues().add(transportCompanyRevenue);
+
+        this.transportCompanyRepository.save(transportCompany);
+
+        transportCompanyRevenue.setTransportCompany(transportCompany);
+
+        this.transportCompanyRevenueRepository.save(transportCompanyRevenue);
+
+        return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
+    }
 
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)

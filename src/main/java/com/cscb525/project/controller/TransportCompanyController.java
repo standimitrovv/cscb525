@@ -2,6 +2,7 @@ package com.cscb525.project.controller;
 
 import com.cscb525.project.dto.TransportCompanyDto;
 import com.cscb525.project.dto.TransportCompanyDtoResponse;
+import com.cscb525.project.dto.TransportCompanyRevenueDto;
 import com.cscb525.project.service.implementation.TransportCompanyServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +61,13 @@ public class TransportCompanyController {
     ){
         this.transportCompanyServiceImpl.deleteCompanyClient(companyId, clientId);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{companyId}/revenue")
+    public TransportCompanyDtoResponse addCompanyRevenue(
+            @PathVariable Integer companyId,
+            @RequestBody TransportCompanyRevenueDto revenueDto
+    ){
+        return this.transportCompanyServiceImpl.addCompanyRevenue(companyId, revenueDto);
     }
 }
