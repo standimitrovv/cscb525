@@ -16,4 +16,6 @@ public interface TransportCompanyService {
     TransportCompanyDtoResponse updateTransportCompany(TransportCompanyDto transportCompanyDto, Integer companyId);
 
     void deleteTransportCompany(Integer companyId);
+
+    TransportCompanyDtoResponse addClient(Integer companyId, Integer clientId);
 }

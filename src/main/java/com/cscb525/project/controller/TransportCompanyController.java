@@ -42,10 +42,14 @@ public class TransportCompanyController {
         return this.transportCompanyServiceImpl.updateTransportCompany(transportCompanyDto, companyId);
     }
 
-
     @DeleteMapping("/{companyId}")
     public ResponseEntity<Void> deleteTransportCompany(@PathVariable Integer companyId) {
         this.transportCompanyServiceImpl.deleteTransportCompany(companyId);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{companyId}/client/{clientId}")
+    public TransportCompanyDtoResponse addClient(@PathVariable Integer companyId, @PathVariable Integer clientId){
+        return this.transportCompanyServiceImpl.addClient(companyId, clientId);
     }
 }

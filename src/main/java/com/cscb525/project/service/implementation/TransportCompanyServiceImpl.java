@@ -2,7 +2,9 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.TransportCompanyDto;
 import com.cscb525.project.dto.TransportCompanyDtoResponse;
+import com.cscb525.project.model.Client;
 import com.cscb525.project.model.TransportCompany;
+import com.cscb525.project.repository.ClientRepository;
 import com.cscb525.project.repository.TransportCompanyRepository;
 import com.cscb525.project.service.TransportCompanyService;
 import org.modelmapper.ModelMapper;
@@ -12,17 +14,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     private final TransportCompanyRepository transportCompanyRepository;
+
+    private final ClientRepository clientRepository;
+
     private final ModelMapper modelMapper;
 
     @Autowired
-    public TransportCompanyServiceImpl(TransportCompanyRepository transportCompanyRepository){
+    public TransportCompanyServiceImpl(TransportCompanyRepository transportCompanyRepository, ClientRepository clientRepository){
         this.transportCompanyRepository = transportCompanyRepository;
+        this.clientRepository = clientRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -67,6 +74,25 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         this.transportCompanyRepository.deleteById(companyId);
+    }
+
+    public TransportCompanyDtoResponse addClient(Integer companyId,Integer clientId){
+        Client client = this.clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
+
+        Optional<Client> existingClient = transportCompany.getClients().stream().filter(c -> c.getId() == clientId).findFirst();
+
+        if(existingClient.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
+        transportCompany.getClients().add(client);
+
+        this.transportCompanyRepository.save(transportCompany);
+
+        return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
     }
 
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
