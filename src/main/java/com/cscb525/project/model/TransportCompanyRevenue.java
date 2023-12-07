@@ -6,28 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-enum Months {
-    JAN,
-    FEB,
-    MAR,
-    APR,
-    MAY,
-    JUN,
-    JUL,
-    AUG,
-    SEPT,
-    OCT,
-    NOV,
-    DEC
-}
-
 @Entity
 @Table(name="revenues")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyRevenue {
+public class TransportCompanyRevenue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

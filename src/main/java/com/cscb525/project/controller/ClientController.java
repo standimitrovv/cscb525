@@ -3,6 +3,7 @@ package com.cscb525.project.controller;
 import com.cscb525.project.dto.ClientDto;
 import com.cscb525.project.dto.ClientDtoResponse;
 import com.cscb525.project.service.implementation.ClientServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class ClientController {
     private final ClientServiceImpl clientServiceImpl;
 
+    @Autowired
     public ClientController(ClientServiceImpl clientServiceImpl){
         this.clientServiceImpl = clientServiceImpl;
     }
