@@ -95,6 +95,17 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
     }
 
+    public void deleteCompanyClient(Integer companyId, Integer clientId) {
+        Client client = this.clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
+
+        transportCompany.getClients().remove(client);
+
+        this.transportCompanyRepository.save(transportCompany);
+    };
+
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)
                 .orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND)));

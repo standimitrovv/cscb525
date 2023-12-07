@@ -18,4 +18,6 @@ public interface TransportCompanyService {
     void deleteTransportCompany(Integer companyId);
 
     TransportCompanyDtoResponse addClient(Integer companyId, Integer clientId);
+
+    void deleteCompanyClient(Integer companyId, Integer clientId);
 }

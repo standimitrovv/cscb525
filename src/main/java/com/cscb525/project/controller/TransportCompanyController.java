@@ -52,4 +52,13 @@ public class TransportCompanyController {
     public TransportCompanyDtoResponse addClient(@PathVariable Integer companyId, @PathVariable Integer clientId){
         return this.transportCompanyServiceImpl.addClient(companyId, clientId);
     }
+
+    @DeleteMapping("/{companyId}/client/{clientId}")
+    public ResponseEntity<Void> deleteCompanyClient(
+            @PathVariable Integer companyId,
+            @PathVariable Integer clientId
+    ){
+        this.transportCompanyServiceImpl.deleteCompanyClient(companyId, clientId);
+        return ResponseEntity.ok().build();
+    }
 }
