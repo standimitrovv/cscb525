@@ -1,7 +1,6 @@
 package com.cscb525.project.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +38,8 @@ public class CompanyRevenue {
     @Column(nullable = false)
     private double revenue;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_name", referencedColumnName = "company_name")
     private TransportCompany transportCompany;
 }
 

@@ -2,7 +2,6 @@ package com.cscb525.project.controller;
 
 import com.cscb525.project.dto.ClientDto;
 import com.cscb525.project.dto.ClientDtoResponse;
-import com.cscb525.project.model.Client;
 import com.cscb525.project.service.implementation.ClientServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +33,9 @@ public class ClientController {
     }
 
     @PatchMapping("/{clientId}")
-    public ClientDtoResponse updateClient(@RequestBody ClientDto clientDto,
-                                          @PathVariable Integer clientId) {
-        return this.clientServiceImpl.updateClient(clientDto, clientId);
+    public ClientDtoResponse updateClient(@PathVariable Integer clientId,
+                                          @RequestBody ClientDto clientDto) {
+        return this.clientServiceImpl.updateClient(clientId, clientDto);
     }
 
     @DeleteMapping("/{clientId}")

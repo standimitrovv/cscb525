@@ -13,7 +13,7 @@ public interface ClientService {
 
     ClientDtoResponse createNewClient(ClientDto clientDto);
 
-    ClientDtoResponse updateClient(ClientDto clientDto, Integer clientId);
+    ClientDtoResponse updateClient(Integer clientId, ClientDto clientDto);
 
     void deleteClient(Integer clientId);
 }

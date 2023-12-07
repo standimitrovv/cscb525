@@ -50,7 +50,7 @@ public class ClientServiceImpl implements ClientService {
         return modelMapper.map(clientToAdd, ClientDtoResponse.class);
     }
 
-    public ClientDtoResponse updateClient(ClientDto clientDto, Integer clientId){
+    public ClientDtoResponse updateClient(Integer clientId, ClientDto clientDto){
         Client clientFound = this.findClientByIdOrThrow(clientId);
 
         clientFound.setName(clientDto.getName());

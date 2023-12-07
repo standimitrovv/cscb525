@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,11 +23,11 @@ public class TransportCompany {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "company_name", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "transportCompany")
-    private List<CompanyRevenue> revenues;
+    private List<CompanyRevenue> revenues = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
