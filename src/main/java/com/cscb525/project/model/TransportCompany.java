@@ -36,4 +36,7 @@ public class TransportCompany {
             inverseJoinColumns = @JoinColumn(name = "client_id")
     )
     private Set<Client> clients = new HashSet<>();
+
+    @OneToMany(mappedBy = "company")
+    private List<Vehicle> vehicles;
 }
