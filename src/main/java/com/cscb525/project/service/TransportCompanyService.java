@@ -1,9 +1,6 @@
 package com.cscb525.project.service;
 
 import com.cscb525.project.dto.*;
-import com.cscb525.project.model.TransportCompanyRevenue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
