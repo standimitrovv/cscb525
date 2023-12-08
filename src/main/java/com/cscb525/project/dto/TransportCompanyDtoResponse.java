@@ -1,7 +1,5 @@
 package com.cscb525.project.dto;
 
-import com.cscb525.project.model.Client;
-import com.cscb525.project.model.TransportCompanyRevenue;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +21,7 @@ public class TransportCompanyDtoResponse {
     @NotBlank
     private String name;
 
-    private Set<Client> clients;
+    private Set<ClientDtoResponse> clients;
 
-    private List<TransportCompanyRevenue> revenueList;
+    private List<TransportCompanyRevenueDtoResponse> revenues;
 }

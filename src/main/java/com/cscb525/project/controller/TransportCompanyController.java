@@ -3,6 +3,7 @@ package com.cscb525.project.controller;
 import com.cscb525.project.dto.TransportCompanyDto;
 import com.cscb525.project.dto.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.TransportCompanyRevenueDto;
+import com.cscb525.project.dto.TransportCompanyRevenueDtoResponse;
 import com.cscb525.project.service.implementation.TransportCompanyServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,12 @@ public class TransportCompanyController {
             @RequestBody TransportCompanyRevenueDto revenueDto
     ){
         return this.transportCompanyServiceImpl.addCompanyRevenue(companyId, revenueDto);
+    }
+
+    @GetMapping("/{companyId}/revenue")
+    public List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(
+            @PathVariable Integer companyId
+    ) {
+        return this.transportCompanyServiceImpl.getAllCompanyRevenues(companyId);
     }
 }

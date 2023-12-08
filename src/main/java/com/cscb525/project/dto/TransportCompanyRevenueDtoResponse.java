@@ -18,7 +18,4 @@ public class TransportCompanyRevenueDtoResponse {
 
     @NotBlank
     private double revenue;
-
-    @NotBlank
-    private TransportCompany company;
 }

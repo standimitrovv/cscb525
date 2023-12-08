@@ -3,6 +3,7 @@ package com.cscb525.project.service.implementation;
 import com.cscb525.project.dto.TransportCompanyDto;
 import com.cscb525.project.dto.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.TransportCompanyRevenueDto;
+import com.cscb525.project.dto.TransportCompanyRevenueDtoResponse;
 import com.cscb525.project.model.Client;
 import com.cscb525.project.model.TransportCompany;
 import com.cscb525.project.model.TransportCompanyRevenue;
@@ -121,8 +122,6 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
         TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
 
-        transportCompany.getRevenues().add(transportCompanyRevenue);
-
         this.transportCompanyRepository.save(transportCompany);
 
         transportCompanyRevenue.setTransportCompany(transportCompany);
@@ -130,6 +129,15 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         this.transportCompanyRevenueRepository.save(transportCompanyRevenue);
 
         return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
+    }
+
+    public List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(Integer companyId){
+        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
+
+        return transportCompany.getRevenues()
+                .stream()
+                .map(revenue -> modelMapper.map(revenue, TransportCompanyRevenueDtoResponse.class))
+                .collect(Collectors.toList());
     }
 
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){

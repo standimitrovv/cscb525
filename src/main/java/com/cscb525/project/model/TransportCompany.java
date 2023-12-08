@@ -27,7 +27,7 @@ public class TransportCompany {
     private String name;
 
     @OneToMany(mappedBy = "transportCompany")
-    private List<TransportCompanyRevenue> revenues = new ArrayList<>();
+    private List<TransportCompanyRevenue> revenues;
 
     @ManyToMany
     @JoinTable(
