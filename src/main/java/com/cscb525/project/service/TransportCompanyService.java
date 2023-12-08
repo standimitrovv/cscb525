@@ -19,13 +19,17 @@ public interface TransportCompanyService {
 
     void deleteTransportCompany(Integer companyId);
 
+    // #region COMPANY CLIENT
     TransportCompanyDtoResponse addClient(Integer companyId, Integer clientId);
 
     void deleteCompanyClient(Integer companyId, Integer clientId);
 
     TransportCompanyDtoResponse updateCompanyClient(Integer companyId, Integer clientId, ClientDto clientDto);
+    // #endregion COMPANY CLIENT
 
+    // #region COMPANY REVENUE
     TransportCompanyDtoResponse addCompanyRevenue(Integer companyId,TransportCompanyRevenueDto revenueDto);
 
     List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(Integer companyId);
+    // #endregion COMPANY REVENUE
 }

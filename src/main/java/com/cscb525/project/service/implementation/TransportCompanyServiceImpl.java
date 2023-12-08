@@ -84,6 +84,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         this.transportCompanyRepository.deleteById(companyId);
     }
 
+    // #region COMPANY CLIENT
     public TransportCompanyDtoResponse addClient(Integer companyId, Integer clientId){
         Client client = this.clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -129,7 +130,9 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                 TransportCompanyDtoResponse.class
         );
     }
+    // #endregion COMPANY CLIENT
 
+    // #region COMPANY REVENUE
     public TransportCompanyDtoResponse addCompanyRevenue(Integer companyId, TransportCompanyRevenueDto revenueDto){
         TransportCompanyRevenue transportCompanyRevenue = this.modelMapper.map(revenueDto, TransportCompanyRevenue.class);
 
@@ -152,6 +155,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                 .map(revenue -> modelMapper.map(revenue, TransportCompanyRevenueDtoResponse.class))
                 .collect(Collectors.toList());
     }
+    // #endregion COMPANY REVENUE
 
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)
