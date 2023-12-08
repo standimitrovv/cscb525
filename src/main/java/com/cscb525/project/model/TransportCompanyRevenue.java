@@ -18,6 +18,7 @@ public class TransportCompanyRevenue {
     private int id;
 
     @Column(name="for_month", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Months forMonth;
 
     @Column(nullable = false)
