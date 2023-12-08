@@ -31,5 +31,7 @@ public interface TransportCompanyService {
     TransportCompanyDtoResponse addCompanyRevenue(Integer companyId,TransportCompanyRevenueDto revenueDto);
 
     List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(Integer companyId);
+
+    List<TransportCompanyRevenueDtoResponse> updateCompanyRevenue(Integer companyId, Integer revenueId, TransportCompanyRevenueDto revenueDto);
     // #endregion COMPANY REVENUE
 }

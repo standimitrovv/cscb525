@@ -77,6 +77,15 @@ public class TransportCompanyController {
         return this.transportCompanyServiceImpl.addCompanyRevenue(companyId, revenueDto);
     }
 
+    @PatchMapping("/{companyId}/revenue/{revenueId}")
+    public List<TransportCompanyRevenueDtoResponse> updateCompanyRevenue(
+            @PathVariable Integer companyId,
+            @PathVariable Integer revenueId,
+            @RequestBody TransportCompanyRevenueDto revenueDto
+    ) {
+        return this.transportCompanyServiceImpl.updateCompanyRevenue(companyId, revenueId, revenueDto);
+    }
+
     @GetMapping("/{companyId}/revenue")
     public List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(
             @PathVariable Integer companyId

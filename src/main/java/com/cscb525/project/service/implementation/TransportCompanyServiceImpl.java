@@ -14,9 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TransportCompanyServiceImpl implements TransportCompanyService {
@@ -153,6 +155,28 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return transportCompany.getRevenues()
                 .stream()
                 .map(revenue -> modelMapper.map(revenue, TransportCompanyRevenueDtoResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<TransportCompanyRevenueDtoResponse> updateCompanyRevenue(Integer companyId, Integer revenueId, TransportCompanyRevenueDto revenueDto){
+        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
+
+        List<TransportCompanyRevenue> transportCompanyRevenues = transportCompany.getRevenues();
+
+        TransportCompanyRevenue tcr = transportCompanyRevenues
+                .stream()
+                .filter(r -> r.getId() == revenueId)
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        tcr.setRevenue(revenueDto.getRevenue());
+        tcr.setForMonth(revenueDto.getForMonth());
+
+        this.transportCompanyRepository.save(transportCompany);
+
+        return transportCompanyRevenues
+                .stream()
+                .map(r -> modelMapper.map(r, TransportCompanyRevenueDtoResponse.class))
                 .collect(Collectors.toList());
     }
     // #endregion COMPANY REVENUE

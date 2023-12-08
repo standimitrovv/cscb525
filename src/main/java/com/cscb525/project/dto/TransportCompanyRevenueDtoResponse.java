@@ -14,7 +14,10 @@ import lombok.Setter;
 @Setter
 public class TransportCompanyRevenueDtoResponse {
     @NotBlank
-    private Months month;
+    private Integer id;
+
+    @NotBlank
+    private Months forMonth;
 
     @NotBlank
     private double revenue;
