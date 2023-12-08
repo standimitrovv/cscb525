@@ -1,9 +1,6 @@
 package com.cscb525.project.controller;
 
-import com.cscb525.project.dto.TransportCompanyDto;
-import com.cscb525.project.dto.TransportCompanyDtoResponse;
-import com.cscb525.project.dto.TransportCompanyRevenueDto;
-import com.cscb525.project.dto.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.*;
 import com.cscb525.project.service.implementation.TransportCompanyServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +50,14 @@ public class TransportCompanyController {
     @PostMapping("/{companyId}/client/{clientId}")
     public TransportCompanyDtoResponse addClient(@PathVariable Integer companyId, @PathVariable Integer clientId){
         return this.transportCompanyServiceImpl.addClient(companyId, clientId);
+    }
+
+    @PatchMapping("/{companyId}/client/{clientId}")
+    public TransportCompanyDtoResponse updateCompanyClient(
+            @PathVariable Integer companyId,
+            @PathVariable Integer clientId,
+            @RequestBody ClientDto clientDto){
+        return this.transportCompanyServiceImpl.updateCompanyClient(companyId, clientId, clientDto);
     }
 
     @DeleteMapping("/{companyId}/client/{clientId}")

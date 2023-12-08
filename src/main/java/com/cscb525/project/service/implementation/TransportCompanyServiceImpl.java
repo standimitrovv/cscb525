@@ -1,9 +1,6 @@
 package com.cscb525.project.service.implementation;
 
-import com.cscb525.project.dto.TransportCompanyDto;
-import com.cscb525.project.dto.TransportCompanyDtoResponse;
-import com.cscb525.project.dto.TransportCompanyRevenueDto;
-import com.cscb525.project.dto.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.*;
 import com.cscb525.project.model.Client;
 import com.cscb525.project.model.TransportCompany;
 import com.cscb525.project.model.TransportCompanyRevenue;
@@ -116,6 +113,22 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
         this.transportCompanyRepository.save(transportCompany);
     };
+
+    public TransportCompanyDtoResponse updateCompanyClient(Integer companyId, Integer clientId, ClientDto clientDto){
+        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
+
+        Client companyClient = transportCompany.getClients().stream()
+                .filter(c -> c.getId() == clientId)
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        companyClient.setName(clientDto.getName());
+
+        return this.modelMapper.map(
+                this.transportCompanyRepository.save(transportCompany),
+                TransportCompanyDtoResponse.class
+        );
+    }
 
     public TransportCompanyDtoResponse addCompanyRevenue(Integer companyId, TransportCompanyRevenueDto revenueDto){
         TransportCompanyRevenue transportCompanyRevenue = this.modelMapper.map(revenueDto, TransportCompanyRevenue.class);

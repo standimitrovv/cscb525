@@ -1,9 +1,6 @@
 package com.cscb525.project.service;
 
-import com.cscb525.project.dto.TransportCompanyDto;
-import com.cscb525.project.dto.TransportCompanyDtoResponse;
-import com.cscb525.project.dto.TransportCompanyRevenueDto;
-import com.cscb525.project.dto.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.*;
 import com.cscb525.project.model.TransportCompanyRevenue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +22,8 @@ public interface TransportCompanyService {
     TransportCompanyDtoResponse addClient(Integer companyId, Integer clientId);
 
     void deleteCompanyClient(Integer companyId, Integer clientId);
+
+    TransportCompanyDtoResponse updateCompanyClient(Integer companyId, Integer clientId, ClientDto clientDto);
 
     TransportCompanyDtoResponse addCompanyRevenue(Integer companyId,TransportCompanyRevenueDto revenueDto);
 
