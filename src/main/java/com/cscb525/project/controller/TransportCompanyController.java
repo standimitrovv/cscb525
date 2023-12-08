@@ -50,7 +50,7 @@ public class TransportCompanyController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{companyId}/client/{clientId}")
+    @PostMapping("/{companyId}/client/{clientId}")
     public TransportCompanyDtoResponse addClient(@PathVariable Integer companyId, @PathVariable Integer clientId){
         return this.transportCompanyServiceImpl.addClient(companyId, clientId);
     }

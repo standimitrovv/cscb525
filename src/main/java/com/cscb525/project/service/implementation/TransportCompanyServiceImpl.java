@@ -87,7 +87,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         this.transportCompanyRepository.deleteById(companyId);
     }
 
-    public TransportCompanyDtoResponse addClient(Integer companyId,Integer clientId){
+    public TransportCompanyDtoResponse addClient(Integer companyId, Integer clientId){
         Client client = this.clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
