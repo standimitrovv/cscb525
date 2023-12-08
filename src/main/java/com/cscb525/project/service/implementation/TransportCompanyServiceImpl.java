@@ -136,14 +136,15 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     // #region COMPANY REVENUE
     public TransportCompanyDtoResponse addCompanyRevenue(Integer companyId, TransportCompanyRevenueDto revenueDto){
-        TransportCompanyRevenue transportCompanyRevenue = this.modelMapper.map(revenueDto, TransportCompanyRevenue.class);
-
         TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
 
-        this.transportCompanyRepository.save(transportCompany);
+        TransportCompanyRevenue transportCompanyRevenue = this.modelMapper.map(revenueDto, TransportCompanyRevenue.class);
 
         transportCompanyRevenue.setTransportCompany(transportCompany);
+        transportCompanyRevenue.setForMonth(revenueDto.getForMonth());
+        transportCompanyRevenue.setRevenue(revenueDto.getRevenue());
 
+        this.transportCompanyRepository.save(transportCompany);
         this.transportCompanyRevenueRepository.save(transportCompanyRevenue);
 
         return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
