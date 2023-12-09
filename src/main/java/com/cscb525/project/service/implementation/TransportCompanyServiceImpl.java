@@ -210,6 +210,20 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
 
+    public TransportCompanyDtoResponse deleteCompanyVehicle(Integer companyId, Integer vehicleId){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        company.getVehicles()
+                .stream()
+                .filter(v -> v.getId() == vehicleId)
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.vehicleRepository.deleteCompany(companyId);
+
+        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+    }
+
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)
                 .orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND)));

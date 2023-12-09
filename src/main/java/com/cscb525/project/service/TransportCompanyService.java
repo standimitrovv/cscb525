@@ -37,4 +37,6 @@ public interface TransportCompanyService {
     TransportCompanyDtoResponse addCompanyVehicle(Integer companyId, Integer vehicleId);
 
     TransportCompanyDtoResponse updateCompanyVehicle(Integer companyId, Integer vehicleId, VehicleDto vehicleDto);
+
+    TransportCompanyDtoResponse deleteCompanyVehicle(Integer companyId, Integer vehicleId);
 }

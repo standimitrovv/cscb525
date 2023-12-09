@@ -109,4 +109,12 @@ public class TransportCompanyController {
     ) {
         return this.transportCompanyServiceImpl.updateCompanyVehicle(companyId, vehicleId, vehicleDto);
     }
+
+    @DeleteMapping("/{companyId}/vehicle/{vehicleId}")
+    public TransportCompanyDtoResponse deleteCompanyVehicle(
+            @PathVariable Integer companyId,
+            @PathVariable Integer vehicleId
+    ) {
+        return this.transportCompanyServiceImpl.deleteCompanyVehicle(companyId, vehicleId);
+    }
 }
