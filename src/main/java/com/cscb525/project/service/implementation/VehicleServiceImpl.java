@@ -7,7 +7,9 @@ import com.cscb525.project.repository.VehicleRepository;
 import com.cscb525.project.service.VehicleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +33,13 @@ public class VehicleServiceImpl implements VehicleService {
                 .stream()
                 .map(v -> modelMapper.map(v, VehicleDtoResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    public VehicleDtoResponse getVehicle(Integer vehicleId){
+        Vehicle vehicle = this.vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return this.modelMapper.map(vehicle, VehicleDtoResponse.class);
     }
 
     public VehicleDtoResponse addVehicle(VehicleDto vehicleDto) {

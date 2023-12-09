@@ -9,5 +9,7 @@ public interface VehicleService {
 
     List<VehicleDtoResponse> getAllVehicles();
 
+    VehicleDtoResponse getVehicle(Integer vehicleId);
+
     VehicleDtoResponse addVehicle(VehicleDto vehicleDto);
 }
