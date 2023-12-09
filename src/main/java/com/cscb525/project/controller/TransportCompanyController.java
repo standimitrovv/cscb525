@@ -47,6 +47,7 @@ public class TransportCompanyController {
         return ResponseEntity.ok().build();
     }
 
+    // #region COMPANY CLIENT
     @PostMapping("/{companyId}/client/{clientId}")
     public TransportCompanyDtoResponse addClient(@PathVariable Integer companyId, @PathVariable Integer clientId){
         return this.transportCompanyServiceImpl.addClient(companyId, clientId);
@@ -68,7 +69,9 @@ public class TransportCompanyController {
         this.transportCompanyServiceImpl.deleteCompanyClient(companyId, clientId);
         return ResponseEntity.ok().build();
     }
+    // #endregion COMPANY CLIENT
 
+    // #region COMPANY REVENUE
     @PostMapping("/{companyId}/revenue")
     public TransportCompanyDtoResponse addCompanyRevenue(
             @PathVariable Integer companyId,
@@ -92,7 +95,9 @@ public class TransportCompanyController {
     ) {
         return this.transportCompanyServiceImpl.getAllCompanyRevenues(companyId);
     }
+    // #endregion COMPANY REVENUE
 
+    // #region COMPANY VEHICLE
     @PostMapping("/{companyId}/vehicle/{vehicleId}")
     public TransportCompanyDtoResponse addCompanyVehicle(
             @PathVariable Integer companyId,
@@ -117,4 +122,5 @@ public class TransportCompanyController {
     ) {
         return this.transportCompanyServiceImpl.deleteCompanyVehicle(companyId, vehicleId);
     }
+    // #endregion COMPANY VEHICLE
 }

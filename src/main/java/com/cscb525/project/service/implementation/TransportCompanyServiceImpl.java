@@ -183,6 +183,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
     }
     // #endregion COMPANY REVENUE
 
+    // #region COMPANY VEHICLE
     public TransportCompanyDtoResponse addCompanyVehicle(Integer companyId, Integer vehicleId){
         TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
 
@@ -223,6 +224,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
         return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
+    // #endregion COMPANY VEHICLE
 
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)
