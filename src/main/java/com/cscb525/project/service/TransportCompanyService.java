@@ -1,6 +1,8 @@
 package com.cscb525.project.service;
 
 import com.cscb525.project.dto.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -33,4 +35,6 @@ public interface TransportCompanyService {
     // #endregion COMPANY REVENUE
 
     TransportCompanyDtoResponse addCompanyVehicle(Integer companyId, Integer vehicleId);
+
+    TransportCompanyDtoResponse updateCompanyVehicle(Integer companyId, Integer vehicleId, VehicleDto vehicleDto);
 }

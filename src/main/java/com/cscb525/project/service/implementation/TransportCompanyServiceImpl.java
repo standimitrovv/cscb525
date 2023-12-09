@@ -196,6 +196,20 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
 
+    public TransportCompanyDtoResponse updateCompanyVehicle(Integer companyId, Integer vehicleId, VehicleDto vehicleDto){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        Vehicle vehicle = company.getVehicles().stream()
+                .filter(v -> v.getId() == vehicleId)
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        vehicle.setVehicleType(vehicleDto.getVehicleType());
+        this.vehicleRepository.save(vehicle);
+
+        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+    }
+
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)
                 .orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND)));

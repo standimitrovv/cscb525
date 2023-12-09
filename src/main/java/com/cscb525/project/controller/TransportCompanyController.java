@@ -100,4 +100,13 @@ public class TransportCompanyController {
     ) {
         return this.transportCompanyServiceImpl.addCompanyVehicle(companyId, vehicleId);
     }
+
+    @PatchMapping("/{companyId}/vehicle/{vehicleId}")
+    public TransportCompanyDtoResponse updateCompanyVehicle(
+            @PathVariable Integer companyId,
+            @PathVariable Integer vehicleId,
+            @RequestBody VehicleDto vehicleDto
+    ) {
+        return this.transportCompanyServiceImpl.updateCompanyVehicle(companyId, vehicleId, vehicleDto);
+    }
 }
