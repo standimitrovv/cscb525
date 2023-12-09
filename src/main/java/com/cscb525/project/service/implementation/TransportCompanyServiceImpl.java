@@ -1,12 +1,11 @@
 package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.*;
-import com.cscb525.project.model.Client;
-import com.cscb525.project.model.TransportCompany;
-import com.cscb525.project.model.TransportCompanyRevenue;
+import com.cscb525.project.model.*;
 import com.cscb525.project.repository.ClientRepository;
 import com.cscb525.project.repository.TransportCompanyRepository;
 import com.cscb525.project.repository.TransportCompanyRevenueRepository;
+import com.cscb525.project.repository.VehicleRepository;
 import com.cscb525.project.service.TransportCompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +26,21 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     private final TransportCompanyRevenueRepository transportCompanyRevenueRepository;
 
+    private final VehicleRepository vehicleRepository;
+
     private final ModelMapper modelMapper;
 
     @Autowired
     public TransportCompanyServiceImpl(
             TransportCompanyRepository transportCompanyRepository,
             ClientRepository clientRepository,
-            TransportCompanyRevenueRepository transportCompanyRevenueRepository
+            TransportCompanyRevenueRepository transportCompanyRevenueRepository,
+            VehicleRepository vehicleRepository
     ){
         this.transportCompanyRepository = transportCompanyRepository;
         this.clientRepository = clientRepository;
         this.transportCompanyRevenueRepository = transportCompanyRevenueRepository;
+        this.vehicleRepository = vehicleRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -179,6 +182,19 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                 .collect(Collectors.toList());
     }
     // #endregion COMPANY REVENUE
+
+    public TransportCompanyDtoResponse addCompanyVehicle(Integer companyId, Integer vehicleId){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        Vehicle vehicle = this.vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        vehicle.setCompany(company);
+
+        this.vehicleRepository.save(vehicle);
+
+        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+    }
 
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)

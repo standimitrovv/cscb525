@@ -1,5 +1,7 @@
 package com.cscb525.project.repository;
 
+import com.cscb525.project.dto.VehicleDto;
+import com.cscb525.project.dto.VehicleDtoResponse;
 import com.cscb525.project.model.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

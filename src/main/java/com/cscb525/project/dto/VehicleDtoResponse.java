@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VehicleDtoResponse {
     @NotBlank
-    private Integer id;
+    private int id;
 
     @NotBlank
     private VehicleType vehicleType;

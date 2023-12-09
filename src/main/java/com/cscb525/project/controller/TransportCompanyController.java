@@ -92,4 +92,12 @@ public class TransportCompanyController {
     ) {
         return this.transportCompanyServiceImpl.getAllCompanyRevenues(companyId);
     }
+
+    @PostMapping("/{companyId}/vehicle/{vehicleId}")
+    public TransportCompanyDtoResponse addCompanyVehicle(
+            @PathVariable Integer companyId,
+            @PathVariable Integer vehicleId
+    ) {
+        return this.transportCompanyServiceImpl.addCompanyVehicle(companyId, vehicleId);
+    }
 }

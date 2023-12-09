@@ -26,5 +26,5 @@ public class TransportCompanyDtoResponse {
 
     private List<TransportCompanyRevenueDtoResponse> revenues;
 
-    private List<Vehicle> vehicles;
+    private List<VehicleDtoResponse> vehicles;
 }

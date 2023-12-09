@@ -16,12 +16,13 @@ public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    @Column(name="vehicle_type")
+    @Column(name="vehicle_type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private VehicleType vehicleType;
 
-    @ManyToOne
-    @JoinColumn(name="company_id")
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="company_id", referencedColumnName = "id")
     private TransportCompany company;
 }
