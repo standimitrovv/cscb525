@@ -1,8 +1,6 @@
 package com.cscb525.project.service;
 
 import com.cscb525.project.dto.*;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -10,36 +8,36 @@ public interface TransportCompanyService {
 
     List<TransportCompanyDtoResponse> getAllTransportCompanies();
 
-    TransportCompanyDtoResponse getTransportCompany(Integer companyId);
+    TransportCompanyDtoResponse getTransportCompany(int companyId);
 
     TransportCompanyDtoResponse addTransportCompany(TransportCompanyDto transportCompany);
 
-    TransportCompanyDtoResponse updateTransportCompany(TransportCompanyDto transportCompanyDto, Integer companyId);
+    TransportCompanyDtoResponse updateTransportCompany(TransportCompanyDto transportCompanyDto, int companyId);
 
-    void deleteTransportCompany(Integer companyId);
+    void deleteTransportCompany(int companyId);
 
     // #region COMPANY CLIENT
-    TransportCompanyDtoResponse addClient(Integer companyId, Integer clientId);
+    TransportCompanyDtoResponse addClient(int companyId, int clientId);
 
-    void deleteCompanyClient(Integer companyId, Integer clientId);
+    void deleteCompanyClient(int companyId, int clientId);
 
-    TransportCompanyDtoResponse updateCompanyClient(Integer companyId, Integer clientId, ClientDto clientDto);
+    TransportCompanyDtoResponse updateCompanyClient(int companyId, int clientId, ClientDto clientDto);
     // #endregion COMPANY CLIENT
 
     // #region COMPANY REVENUE
-    TransportCompanyDtoResponse addCompanyRevenue(Integer companyId,TransportCompanyRevenueDto revenueDto);
+    TransportCompanyDtoResponse addCompanyRevenue(int companyId, TransportCompanyRevenueDto revenueDto);
 
-    List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(Integer companyId);
+    List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(int companyId);
 
-    List<TransportCompanyRevenueDtoResponse> updateCompanyRevenue(Integer companyId, Integer revenueId, TransportCompanyRevenueDto revenueDto);
+    List<TransportCompanyRevenueDtoResponse> updateCompanyRevenue(int companyId, int revenueId, TransportCompanyRevenueDto revenueDto);
     // #endregion COMPANY REVENUE
 
     // #region COMPANY VEHICLE
-    TransportCompanyDtoResponse addCompanyVehicle(Integer companyId, Integer vehicleId);
+    TransportCompanyDtoResponse addCompanyVehicle(int companyId, int vehicleId);
 
-    TransportCompanyDtoResponse updateCompanyVehicle(Integer companyId, Integer vehicleId, VehicleDto vehicleDto);
+    TransportCompanyDtoResponse updateCompanyVehicle(int companyId, int vehicleId, VehicleDto vehicleDto);
 
-    TransportCompanyDtoResponse deleteCompanyVehicle(Integer companyId, Integer vehicleId);
+    TransportCompanyDtoResponse deleteCompanyVehicle(int companyId, int vehicleId);
     // #endregion COMPANY VEHICLE
 
     // #region COMPANY EMPLOYEE
