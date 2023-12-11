@@ -123,4 +123,20 @@ public class TransportCompanyController {
         return this.transportCompanyServiceImpl.deleteCompanyVehicle(companyId, vehicleId);
     }
     // #endregion COMPANY VEHICLE
+
+    // #region COMPANY EMPLOYEE
+    @GetMapping("/{companyId}/employee")
+    public List<EmployeeDtoResponse> getAllCompanyEmployees(@PathVariable int companyId){
+        return this.transportCompanyServiceImpl.getAllCompanyEmployees(companyId);
+    }
+
+    @PostMapping("/{companyId}/employee/{employeeId}")
+    public TransportCompanyDtoResponse addCompanyEmployee(
+            @PathVariable int companyId,
+            @PathVariable int employeeId
+    ) {
+        return this.transportCompanyServiceImpl.addCompanyEmployee(companyId, employeeId);
+    }
+
+    // #endregion COMPANY EMPLOYEE
 }

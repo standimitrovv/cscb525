@@ -41,4 +41,10 @@ public interface TransportCompanyService {
 
     TransportCompanyDtoResponse deleteCompanyVehicle(Integer companyId, Integer vehicleId);
     // #endregion COMPANY VEHICLE
+
+    // #region COMPANY EMPLOYEE
+    List<EmployeeDtoResponse> getAllCompanyEmployees(int companyId);
+
+    TransportCompanyDtoResponse addCompanyEmployee(int companyId, int employeeId);
+    // #endregion COMPANY EMPLOYEE
 }

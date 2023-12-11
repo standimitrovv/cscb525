@@ -2,10 +2,7 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.*;
 import com.cscb525.project.model.*;
-import com.cscb525.project.repository.ClientRepository;
-import com.cscb525.project.repository.TransportCompanyRepository;
-import com.cscb525.project.repository.TransportCompanyRevenueRepository;
-import com.cscb525.project.repository.VehicleRepository;
+import com.cscb525.project.repository.*;
 import com.cscb525.project.service.TransportCompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +25,8 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     private final VehicleRepository vehicleRepository;
 
+    private final EmployeeRepository employeeRepository;
+
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -35,12 +34,14 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             TransportCompanyRepository transportCompanyRepository,
             ClientRepository clientRepository,
             TransportCompanyRevenueRepository transportCompanyRevenueRepository,
-            VehicleRepository vehicleRepository
+            VehicleRepository vehicleRepository,
+            EmployeeRepository employeeRepository
     ){
         this.transportCompanyRepository = transportCompanyRepository;
         this.clientRepository = clientRepository;
         this.transportCompanyRevenueRepository = transportCompanyRevenueRepository;
         this.vehicleRepository = vehicleRepository;
+        this.employeeRepository = employeeRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -225,6 +226,38 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
     // #endregion COMPANY VEHICLE
+
+    // #region COMPANY EMPLOYEE
+    public List<EmployeeDtoResponse> getAllCompanyEmployees(int companyId){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        return company
+                .getEmployees()
+                .stream()
+                .map(e -> this.modelMapper.map(e, EmployeeDtoResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    public TransportCompanyDtoResponse addCompanyEmployee(int companyId, int employeeId){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        Employee employee = this.employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        boolean employeeExists = company.getEmployees().contains(employee);
+
+        if(employeeExists){
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+
+        employee.setCompany(company);
+
+        this.employeeRepository.save(employee);
+        this.transportCompanyRepository.save(company);
+
+        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+    }
+    // #region COMPANY EMPLOYEE
 
     private TransportCompany findTransportCompanyByIdOrThrow(Integer companyId){
         return this.transportCompanyRepository.findById(companyId)

@@ -3,6 +3,7 @@ package com.cscb525.project.controller;
 import com.cscb525.project.dto.EmployeeDto;
 import com.cscb525.project.dto.EmployeeDtoResponse;
 import com.cscb525.project.service.implementation.EmployeeServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public class EmployeeController {
     private final EmployeeServiceImpl employeeService;
 
+    @Autowired
     public EmployeeController(EmployeeServiceImpl employeeService) {
         this.employeeService = employeeService;
     }

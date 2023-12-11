@@ -6,6 +6,7 @@ import com.cscb525.project.model.Employee;
 import com.cscb525.project.repository.EmployeeRepository;
 import com.cscb525.project.service.EmployeeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = new ModelMapper();
