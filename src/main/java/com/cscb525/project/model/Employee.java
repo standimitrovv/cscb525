@@ -21,6 +21,7 @@ public class Employee {
     private String name;
 
     @Column(name="driving_qualification", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DrivingQualification drivingQualification;
 
     @Column(name="salary", nullable = false)
