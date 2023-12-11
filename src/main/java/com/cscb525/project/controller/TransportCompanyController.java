@@ -138,5 +138,22 @@ public class TransportCompanyController {
         return this.transportCompanyServiceImpl.addCompanyEmployee(companyId, employeeId);
     }
 
+    @PatchMapping("/{companyId}/employee/{employeeId}")
+    public TransportCompanyDtoResponse updateCompanyEmployee(
+            @PathVariable int companyId,
+            @PathVariable int employeeId,
+            @RequestBody EmployeeDto employeeDto
+    ) {
+        return this.transportCompanyServiceImpl.updateCompanyEmployee(companyId, employeeId, employeeDto);
+    }
+
+    @DeleteMapping("/{companyId}/employee/{employeeId}")
+    public TransportCompanyDtoResponse deleteCompanyEmployee(
+            @PathVariable int companyId,
+            @PathVariable int employeeId
+    ) {
+        return this.transportCompanyServiceImpl.deleteCompanyEmployee(companyId, employeeId);
+    }
+
     // #endregion COMPANY EMPLOYEE
 }

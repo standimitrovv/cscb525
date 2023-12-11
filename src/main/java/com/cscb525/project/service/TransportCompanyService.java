@@ -46,5 +46,9 @@ public interface TransportCompanyService {
     List<EmployeeDtoResponse> getAllCompanyEmployees(int companyId);
 
     TransportCompanyDtoResponse addCompanyEmployee(int companyId, int employeeId);
+
+    TransportCompanyDtoResponse updateCompanyEmployee(int companyId, int employeeId, EmployeeDto employeeDto);
+
+    TransportCompanyDtoResponse deleteCompanyEmployee(int companyId, int employeeId);
     // #endregion COMPANY EMPLOYEE
 }

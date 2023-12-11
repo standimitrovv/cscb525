@@ -250,10 +250,50 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
 
+        company.getEmployees().add(employee);
         employee.setCompany(company);
 
         this.employeeRepository.save(employee);
         this.transportCompanyRepository.save(company);
+
+        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+    }
+
+    public TransportCompanyDtoResponse updateCompanyEmployee(int companyId, int employeeId, EmployeeDto employeeDto){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        Employee e = this.employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        boolean employeeExists = company.getEmployees().contains(e);
+
+        if(!employeeExists) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        e.setSalary(employeeDto.getSalary());
+        e.setDrivingQualification(employeeDto.getDrivingQualification());
+        this.employeeRepository.save(e);
+
+        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+    }
+
+    public TransportCompanyDtoResponse deleteCompanyEmployee(int companyId, int employeeId){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        Employee e = this.employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        boolean employeeExists = company.getEmployees().contains(e);
+
+        if(!employeeExists) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        company.getEmployees().remove(e);
+        this.transportCompanyRepository.save(company);
+
+        this.employeeRepository.deleteCompany(companyId);
 
         return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
