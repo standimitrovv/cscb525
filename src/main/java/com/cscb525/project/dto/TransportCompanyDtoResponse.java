@@ -1,6 +1,5 @@
 package com.cscb525.project.dto;
 
-import com.cscb525.project.model.Vehicle;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,4 +28,6 @@ public class TransportCompanyDtoResponse {
     private List<VehicleDtoResponse> vehicles;
 
     private Set<EmployeeDtoResponse> employees;
+
+    private Set<ShipmentDtoResponse> shipments;
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "vehicles")
 @Getter
@@ -25,4 +27,7 @@ public class Vehicle {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="company_id", referencedColumnName = "id")
     private TransportCompany company;
+
+    @OneToMany(mappedBy = "vehicle")
+    private Set<Shipment> shipments;
 }

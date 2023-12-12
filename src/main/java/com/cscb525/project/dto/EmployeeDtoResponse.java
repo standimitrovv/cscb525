@@ -1,6 +1,7 @@
 package com.cscb525.project.dto;
 
 import com.cscb525.project.model.DrivingQualification;
+import com.cscb525.project.model.Shipment;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,4 +29,6 @@ public class EmployeeDtoResponse {
 
     @NotBlank
     private double salary;
+
+    private Set<ShipmentDtoResponse> shipments;
 }

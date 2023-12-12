@@ -26,5 +26,8 @@ public class Client {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "clients")
-    private Set<TransportCompany> companies = new HashSet<>();
+    private Set<TransportCompany> companies;
+
+    @OneToMany(mappedBy = "client")
+    private Set<Shipment> shipments;
 }

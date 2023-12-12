@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,4 +18,6 @@ public class ClientDtoResponse {
 
     @NotBlank
     private String name;
+
+    private Set<ShipmentDtoResponse> shipments;
 }

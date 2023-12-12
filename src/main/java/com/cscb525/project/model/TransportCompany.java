@@ -41,4 +41,7 @@ public class TransportCompany {
 
     @OneToMany(mappedBy = "company")
     private Set<Employee> employees;
+
+    @OneToMany(mappedBy = "company")
+    private Set<Shipment> shipments;
 }
