@@ -5,12 +5,15 @@ import com.cscb525.project.dto.employee.EmployeeDto;
 import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDto;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.shipment.ShipmentDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
 import com.cscb525.project.model.client.Client;
 import com.cscb525.project.model.employee.Employee;
 import com.cscb525.project.model.revenue.TransportCompanyRevenue;
+import com.cscb525.project.model.shipment.CargoType;
+import com.cscb525.project.model.shipment.Shipment;
 import com.cscb525.project.model.transportCompany.TransportCompany;
 import com.cscb525.project.model.vehicle.Vehicle;
 import com.cscb525.project.repository.*;
@@ -38,6 +41,8 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     private final EmployeeRepository employeeRepository;
 
+    private final ShipmentRepository shipmentRepository;
+
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -46,13 +51,15 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             ClientRepository clientRepository,
             TransportCompanyRevenueRepository transportCompanyRevenueRepository,
             VehicleRepository vehicleRepository,
-            EmployeeRepository employeeRepository
+            EmployeeRepository employeeRepository,
+            ShipmentRepository shipmentRepository
     ){
         this.transportCompanyRepository = transportCompanyRepository;
         this.clientRepository = clientRepository;
         this.transportCompanyRevenueRepository = transportCompanyRevenueRepository;
         this.vehicleRepository = vehicleRepository;
         this.employeeRepository = employeeRepository;
+        this.shipmentRepository = shipmentRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -299,6 +306,62 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
     // #region COMPANY EMPLOYEE
+
+    // #region COMPANY SHIPMENT
+    public TransportCompanyDtoResponse addShipment(int companyId, int employeeId, int clientId, int vehicleId, ShipmentDto shipmentDto){
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        Employee employee = findEmployeeByIdOrThrow(employeeId);
+
+        Client client = findClientByIdOrThrow(clientId);
+
+        Vehicle vehicle = findVehicleByIdOrThrow(vehicleId);
+
+        CargoType cargoType = shipmentDto.getCargoType();
+        double cargoWeight = shipmentDto.getCargoWeight();
+
+        if(vehicle.getCompany() == null || vehicle.getCompany().getId() != companyId) {
+            // TODO: throw a custom exception that says that the vehicle should be assigned to the company first
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        boolean isCompanyClient = client.getCompanies().contains(company);
+
+        if(!isCompanyClient) {
+            // TODO: throw a custom exception that says that the client should be assigned to the company first
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if(employee.getCompany() == null || employee.getCompany().getId() != companyId){
+            // TODO: throw a custom exception that says that the employee should be assigned to the company first
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if(cargoType == CargoType.GOODS && cargoWeight <= 0 ){
+            // TODO: throw a custom exception that says that cargoWeight should be specified
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        Shipment tempShipment = new Shipment();
+        tempShipment.setDeparturePoint(shipmentDto.getDeparturePoint());
+        tempShipment.setDestination(shipmentDto.getDestination());
+        tempShipment.setDepartureDate(shipmentDto.getDepartureDate());
+        tempShipment.setArrivalDate(shipmentDto.getArrivalDate());
+        tempShipment.setPrice(shipmentDto.getPrice());
+        tempShipment.setCargoWeight(cargoWeight);
+        tempShipment.setCargoType(cargoType);
+        tempShipment.setCompany(company);
+        tempShipment.setEmployee(employee);
+        tempShipment.setClient(client);
+        tempShipment.setVehicle(vehicle);
+
+        Shipment shipment = this.shipmentRepository.save(tempShipment);
+
+        company.getShipments().add(shipment);
+        return this.modelMapper.map(this.transportCompanyRepository.save(company), TransportCompanyDtoResponse.class);
+    }
+
+    // #endregion COMPANY SHIPMENT
 
     private TransportCompany findTransportCompanyByIdOrThrow(int companyId){
         return this.transportCompanyRepository.findById(companyId)

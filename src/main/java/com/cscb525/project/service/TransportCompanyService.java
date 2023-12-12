@@ -5,9 +5,12 @@ import com.cscb525.project.dto.employee.EmployeeDto;
 import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDto;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.shipment.ShipmentDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -56,4 +59,6 @@ public interface TransportCompanyService {
 
     TransportCompanyDtoResponse deleteCompanyEmployee(int companyId, int employeeId);
     // #endregion COMPANY EMPLOYEE
+
+    TransportCompanyDtoResponse addShipment(int companyId, int employeeId, int clientId, int vehicleId, ShipmentDto shipmentDto);
 }
