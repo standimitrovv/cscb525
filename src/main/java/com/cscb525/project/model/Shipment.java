@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDate;
 
@@ -41,9 +43,9 @@ public class Shipment {
     @Enumerated(EnumType.STRING)
     private CargoType cargoType;
 
-    @Column(name="payment_status", nullable = false)
+    @Column(name="payment_status", nullable = false, columnDefinition = "ENUM('PAID', 'NOT_PAID') default 'NOT_PAID'")
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private PaymentStatus paymentStatus = PaymentStatus.NOT_PAID;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="company_id", referencedColumnName = "id", nullable = false)

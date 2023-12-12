@@ -3,10 +3,7 @@ package com.cscb525.project.dto;
 import com.cscb525.project.model.CargoType;
 import com.cscb525.project.model.PaymentStatus;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -35,6 +32,5 @@ public class ShipmentDto {
     @NotBlank
     private CargoType cargoType;
 
-    @NotBlank
     private PaymentStatus paymentStatus;
 }
