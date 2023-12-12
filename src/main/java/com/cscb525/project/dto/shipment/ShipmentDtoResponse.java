@@ -1,4 +1,4 @@
-package com.cscb525.project.dto;
+package com.cscb525.project.dto.shipment;
 
 import com.cscb525.project.model.shipment.CargoType;
 import com.cscb525.project.model.shipment.PaymentStatus;

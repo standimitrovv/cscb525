@@ -1,4 +1,4 @@
-package com.cscb525.project.dto;
+package com.cscb525.project.dto.vehicle;
 
 import com.cscb525.project.model.vehicle.VehicleType;
 import jakarta.validation.constraints.NotBlank;
@@ -7,18 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VehicleDtoResponse {
-    @NotBlank
-    private int id;
-
+public class VehicleDto {
     @NotBlank
     private VehicleType vehicleType;
-
-    private Set<ShipmentDtoResponse> shipments;
 }

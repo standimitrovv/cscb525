@@ -1,4 +1,4 @@
-package com.cscb525.project.dto;
+package com.cscb525.project.dto.employee;
 
 import com.cscb525.project.model.employee.DrivingQualification;
 import jakarta.persistence.EnumType;
@@ -9,16 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDtoResponse {
-    @NotBlank
-    private int id;
-
+public class EmployeeDto {
     @NotBlank
     private String name;
 
@@ -28,6 +23,4 @@ public class EmployeeDtoResponse {
 
     @NotBlank
     private double salary;
-
-    private Set<ShipmentDtoResponse> shipments;
 }

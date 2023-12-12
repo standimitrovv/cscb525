@@ -1,5 +1,6 @@
-package com.cscb525.project.dto;
+package com.cscb525.project.dto.client;
 
+import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

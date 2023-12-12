@@ -1,5 +1,6 @@
-package com.cscb525.project.dto;
+package com.cscb525.project.dto.revenue;
 
+import com.cscb525.project.model.revenue.Months;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransportCompanyDto {
+public class TransportCompanyRevenueDto {
     @NotBlank
-    private String name;
+    private Months forMonth;
+
+    @NotBlank
+    private double revenue;
 }

@@ -1,7 +1,7 @@
 package com.cscb525.project.service;
 
-import com.cscb525.project.dto.EmployeeDto;
-import com.cscb525.project.dto.EmployeeDtoResponse;
+import com.cscb525.project.dto.employee.EmployeeDto;
+import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 
 import java.util.List;
 

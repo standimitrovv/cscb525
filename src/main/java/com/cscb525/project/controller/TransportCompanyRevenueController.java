@@ -1,6 +1,6 @@
 package com.cscb525.project.controller;
 
-import com.cscb525.project.dto.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
 import com.cscb525.project.service.implementation.TransportCompanyRevenueServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

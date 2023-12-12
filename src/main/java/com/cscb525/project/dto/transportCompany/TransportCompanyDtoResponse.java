@@ -1,5 +1,10 @@
-package com.cscb525.project.dto;
+package com.cscb525.project.dto.transportCompany;
 
+import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.vehicle.VehicleDtoResponse;
+import com.cscb525.project.dto.client.ClientDtoResponse;
+import com.cscb525.project.dto.employee.EmployeeDtoResponse;
+import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

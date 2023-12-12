@@ -1,7 +1,7 @@
 package com.cscb525.project.controller;
 
-import com.cscb525.project.dto.ClientDto;
-import com.cscb525.project.dto.ClientDtoResponse;
+import com.cscb525.project.dto.client.ClientDto;
+import com.cscb525.project.dto.client.ClientDtoResponse;
 import com.cscb525.project.service.implementation.ClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,13 @@
 package com.cscb525.project.service;
 
-import com.cscb525.project.dto.*;
+import com.cscb525.project.dto.client.ClientDto;
+import com.cscb525.project.dto.employee.EmployeeDto;
+import com.cscb525.project.dto.employee.EmployeeDtoResponse;
+import com.cscb525.project.dto.revenue.TransportCompanyRevenueDto;
+import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
+import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
+import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
+import com.cscb525.project.dto.vehicle.VehicleDto;
 
 import java.util.List;
 

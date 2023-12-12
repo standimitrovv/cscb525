@@ -1,4 +1,4 @@
-package com.cscb525.project.dto;
+package com.cscb525.project.dto.transportCompany;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientDto {
+public class TransportCompanyDto {
     @NotBlank
     private String name;
 }
