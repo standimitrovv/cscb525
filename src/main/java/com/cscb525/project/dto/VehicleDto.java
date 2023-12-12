@@ -1,6 +1,6 @@
 package com.cscb525.project.dto;
 
-import com.cscb525.project.model.VehicleType;
+import com.cscb525.project.model.vehicle.VehicleType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

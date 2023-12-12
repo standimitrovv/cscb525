@@ -1,7 +1,7 @@
 package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.TransportCompanyRevenueDtoResponse;
-import com.cscb525.project.model.TransportCompanyRevenue;
+import com.cscb525.project.model.revenue.TransportCompanyRevenue;
 import com.cscb525.project.repository.TransportCompanyRevenueRepository;
 import com.cscb525.project.service.TransportCompanyRevenueService;
 import org.modelmapper.ModelMapper;

@@ -1,7 +1,6 @@
 package com.cscb525.project.dto;
 
-import com.cscb525.project.model.DrivingQualification;
-import com.cscb525.project.model.Shipment;
+import com.cscb525.project.model.employee.DrivingQualification;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;

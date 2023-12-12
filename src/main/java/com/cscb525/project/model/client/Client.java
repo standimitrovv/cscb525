@@ -1,5 +1,7 @@
-package com.cscb525.project.model;
+package com.cscb525.project.model.client;
 
+import com.cscb525.project.model.shipment.Shipment;
+import com.cscb525.project.model.transportCompany.TransportCompany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

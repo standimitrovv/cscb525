@@ -1,7 +1,11 @@
 package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.*;
-import com.cscb525.project.model.*;
+import com.cscb525.project.model.client.Client;
+import com.cscb525.project.model.employee.Employee;
+import com.cscb525.project.model.revenue.TransportCompanyRevenue;
+import com.cscb525.project.model.transportCompany.TransportCompany;
+import com.cscb525.project.model.vehicle.Vehicle;
 import com.cscb525.project.repository.*;
 import com.cscb525.project.service.TransportCompanyService;
 import org.modelmapper.ModelMapper;
@@ -12,7 +16,6 @@ import org.springframework.web.ErrorResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

@@ -2,7 +2,7 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.VehicleDto;
 import com.cscb525.project.dto.VehicleDtoResponse;
-import com.cscb525.project.model.Vehicle;
+import com.cscb525.project.model.vehicle.Vehicle;
 import com.cscb525.project.repository.VehicleRepository;
 import com.cscb525.project.service.VehicleService;
 import org.modelmapper.ModelMapper;

@@ -1,4 +1,4 @@
-package com.cscb525.project.model;
+package com.cscb525.project.model.vehicle;
 
 import lombok.Getter;
 

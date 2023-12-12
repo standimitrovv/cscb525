@@ -2,7 +2,7 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.EmployeeDto;
 import com.cscb525.project.dto.EmployeeDtoResponse;
-import com.cscb525.project.model.Employee;
+import com.cscb525.project.model.employee.Employee;
 import com.cscb525.project.repository.EmployeeRepository;
 import com.cscb525.project.service.EmployeeService;
 import org.modelmapper.ModelMapper;

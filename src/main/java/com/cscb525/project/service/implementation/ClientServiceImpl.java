@@ -2,7 +2,7 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.ClientDto;
 import com.cscb525.project.dto.ClientDtoResponse;
-import com.cscb525.project.model.Client;
+import com.cscb525.project.model.client.Client;
 import com.cscb525.project.repository.ClientRepository;
 import com.cscb525.project.service.ClientService;
 import org.modelmapper.ModelMapper;

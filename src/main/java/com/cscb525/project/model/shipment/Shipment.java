@@ -1,12 +1,14 @@
-package com.cscb525.project.model;
+package com.cscb525.project.model.shipment;
 
+import com.cscb525.project.model.client.Client;
+import com.cscb525.project.model.employee.Employee;
+import com.cscb525.project.model.transportCompany.TransportCompany;
+import com.cscb525.project.model.vehicle.Vehicle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDate;
 

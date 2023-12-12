@@ -1,5 +1,6 @@
-package com.cscb525.project.model;
+package com.cscb525.project.model.revenue;
 
+import com.cscb525.project.model.transportCompany.TransportCompany;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

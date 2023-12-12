@@ -1,7 +1,7 @@
 package com.cscb525.project.dto;
 
-import com.cscb525.project.model.CargoType;
-import com.cscb525.project.model.PaymentStatus;
+import com.cscb525.project.model.shipment.CargoType;
+import com.cscb525.project.model.shipment.PaymentStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
