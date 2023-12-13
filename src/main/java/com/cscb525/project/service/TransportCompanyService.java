@@ -9,6 +9,7 @@ import com.cscb525.project.dto.shipment.ShipmentDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
+import com.cscb525.project.model.shipment.PaymentStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -60,5 +61,9 @@ public interface TransportCompanyService {
     TransportCompanyDtoResponse deleteCompanyEmployee(int companyId, int employeeId);
     // #endregion COMPANY EMPLOYEE
 
+    // #region COMPANY SHIPMENT
     TransportCompanyDtoResponse addShipment(int companyId, int employeeId, int clientId, int vehicleId, ShipmentDto shipmentDto);
+
+    TransportCompanyDtoResponse updateShipmentPaymentStatus(int companyId, int employeeId, int clientId, int vehicleId, int shipmentId, PaymentStatus paymentStatus);
+    // #endregion COMPANY SHIPMENT
 }

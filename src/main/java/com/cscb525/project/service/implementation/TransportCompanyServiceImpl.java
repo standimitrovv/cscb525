@@ -9,19 +9,18 @@ import com.cscb525.project.dto.shipment.ShipmentDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
-import com.cscb525.project.exception.transportCompany.CargoWeightNotDefinedException;
-import com.cscb525.project.exception.transportCompany.CompanyClientNotFoundException;
-import com.cscb525.project.exception.transportCompany.CompanyEmployeeNotFoundException;
-import com.cscb525.project.exception.transportCompany.CompanyVehicleNotFoundException;
+import com.cscb525.project.exception.transportCompany.*;
 import com.cscb525.project.model.client.Client;
 import com.cscb525.project.model.employee.Employee;
 import com.cscb525.project.model.revenue.TransportCompanyRevenue;
 import com.cscb525.project.model.shipment.CargoType;
+import com.cscb525.project.model.shipment.PaymentStatus;
 import com.cscb525.project.model.shipment.Shipment;
 import com.cscb525.project.model.transportCompany.TransportCompany;
 import com.cscb525.project.model.vehicle.Vehicle;
 import com.cscb525.project.repository.*;
 import com.cscb525.project.service.TransportCompanyService;
+import jakarta.annotation.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -326,23 +325,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         CargoType cargoType = shipmentDto.getCargoType();
         double cargoWeight = shipmentDto.getCargoWeight();
 
-        if(vehicle.getCompany() == null || vehicle.getCompany().getId() != companyId) {
-            throw new CompanyVehicleNotFoundException(COMPANY_VEHICLE_NOT_FOUND);
-        }
-
-        boolean isCompanyClient = client.getCompanies().contains(company);
-
-        if(!isCompanyClient) {
-            throw new CompanyClientNotFoundException(COMPANY_CLIENT_NOT_FOUND);
-        }
-
-        if(employee.getCompany() == null || employee.getCompany().getId() != companyId){
-            throw new CompanyEmployeeNotFoundException(COMPANY_EMPLOYEE_NOT_FOUND);
-        }
-
-        if(cargoType == CargoType.GOODS && cargoWeight <= 0 ){
-            throw new CargoWeightNotDefinedException(CARGO_WEIGHT_NOT_DEFINED);
-        }
+        validateShipment(vehicle, company, client, employee, cargoType, cargoWeight);
 
         Shipment tempShipment = new Shipment();
         tempShipment.setDeparturePoint(shipmentDto.getDeparturePoint());
@@ -363,6 +346,60 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         return this.modelMapper.map(this.transportCompanyRepository.save(company), TransportCompanyDtoResponse.class);
     }
 
+    public TransportCompanyDtoResponse updateShipmentPaymentStatus(int companyId, int employeeId, int clientId, int vehicleId, int shipmentId, PaymentStatus paymentStatus){
+
+        TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
+
+        Employee employee = findEmployeeByIdOrThrow(employeeId);
+
+        Client client = findClientByIdOrThrow(clientId);
+
+        Vehicle vehicle = findVehicleByIdOrThrow(vehicleId);
+
+        validateShipment(vehicle, company, client, employee, null, 0);
+
+        Shipment shipment = findShipmentByIdOrThrow(shipmentId);
+
+        if(!shipment.getCompany().equals(company)){
+            throw new CompanyShipmentNotFound(COMPANY_SHIPMENT_NOT_FOUND);
+        }
+
+        if(paymentStatus == null){
+            throw new ShipmentPaymentStatusNotDefined(SHIPMENT_PAYMENT_STATUS_NOT_DEFINED);
+        }
+
+        shipment.setPaymentStatus(paymentStatus);
+
+        this.shipmentRepository.save(shipment);
+
+        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+    }
+
+    private void validateShipment(Vehicle vehicle,
+                                  TransportCompany company,
+                                  Client client,
+                                  Employee employee,
+                                  @Nullable CargoType cargoType,
+                                  double cargoWeight
+    ) {
+        if(vehicle.getCompany() == null || vehicle.getCompany().getId() != company.getId()) {
+            throw new CompanyVehicleNotFoundException(COMPANY_VEHICLE_NOT_FOUND);
+        }
+
+        boolean isCompanyClient = client.getCompanies().contains(company);
+
+        if(!isCompanyClient) {
+            throw new CompanyClientNotFoundException(COMPANY_CLIENT_NOT_FOUND);
+        }
+
+        if(employee.getCompany() == null || employee.getCompany().getId() != company.getId()){
+            throw new CompanyEmployeeNotFoundException(COMPANY_EMPLOYEE_NOT_FOUND);
+        }
+
+        if(cargoType == CargoType.GOODS && cargoWeight <= 0 ){
+            throw new CargoWeightNotDefinedException(CARGO_WEIGHT_NOT_DEFINED);
+        }
+    }
     // #endregion COMPANY SHIPMENT
 
     private TransportCompany findTransportCompanyByIdOrThrow(int companyId){
@@ -387,6 +424,11 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     private Employee findEmployeeByIdOrThrow(int employeeId){
         return this.employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    private Shipment findShipmentByIdOrThrow(int shipmentId){
+        return this.shipmentRepository.findById(shipmentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

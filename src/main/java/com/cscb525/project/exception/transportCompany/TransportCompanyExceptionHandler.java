@@ -17,7 +17,9 @@ public class TransportCompanyExceptionHandler {
             case "CompanyVehicleNotFoundException",
                     "CompanyClientNotFoundException",
                     "CompanyEmployeeNotFoundException",
-                    "CargoWeightNotDefinedException":
+                    "CargoWeightNotDefinedException",
+                    "ShipmentPaymentStatusNotDefined",
+                    "CompanyShipmentNotFound":
                 status = HttpStatus.NOT_FOUND;
                 break;
         }

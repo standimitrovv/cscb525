@@ -9,6 +9,7 @@ import com.cscb525.project.dto.shipment.ShipmentDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
+import com.cscb525.project.model.shipment.PaymentStatus;
 import com.cscb525.project.service.implementation.TransportCompanyServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,6 +166,7 @@ public class TransportCompanyController {
 
     // #endregion COMPANY EMPLOYEE
 
+    // #region COMPANY SHIPMENT
     @PostMapping("/{companyId}/employee/{employeeId}/client/{clientId}/vehicle/{vehicleId}/shipment")
     public TransportCompanyDtoResponse addShipment(
             @PathVariable int companyId,
@@ -175,4 +177,17 @@ public class TransportCompanyController {
             ) {
         return this.transportCompanyServiceImpl.addShipment(companyId, employeeId, clientId, vehicleId, shipmentDto);
     }
+
+    @PatchMapping("/{companyId}/employee/{employeeId}/client/{clientId}/vehicle/{vehicleId}/shipment/{shipmentId}")
+    public TransportCompanyDtoResponse updateShipmentPaymentStatus (
+            @PathVariable int companyId,
+            @PathVariable int employeeId,
+            @PathVariable int clientId,
+            @PathVariable int vehicleId,
+            @PathVariable int shipmentId,
+            @RequestParam(name = "ps") PaymentStatus paymentStatus
+    ) {
+        return this.transportCompanyServiceImpl.updateShipmentPaymentStatus(companyId, employeeId, clientId, vehicleId, shipmentId, paymentStatus);
+    }
+    // #endregion COMPANY SHIPMENT
 }
