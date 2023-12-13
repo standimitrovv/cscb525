@@ -18,8 +18,13 @@ public class TransportCompanyExceptionHandler {
                     "CompanyClientNotFoundException",
                     "CompanyEmployeeNotFoundException",
                     "CargoWeightNotDefinedException",
-                    "ShipmentPaymentStatusNotDefined",
-                    "CompanyShipmentNotFound":
+                    "ShipmentPaymentStatusNotDefinedException",
+                    "CompanyShipmentNotFoundException",
+                    "VehicleNotFoundException",
+                    "ClientNotFoundException",
+                    "ShipmentNotFoundException",
+                    "RevenueNotFoundException",
+                    "EmployeeNotFoundException":
                 status = HttpStatus.NOT_FOUND;
                 break;
         }

@@ -9,7 +9,12 @@ import com.cscb525.project.dto.shipment.ShipmentDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
+import com.cscb525.project.exception.client.ClientNotFoundException;
+import com.cscb525.project.exception.employee.EmployeeNotFoundException;
+import com.cscb525.project.exception.revenue.RevenueNotFoundException;
+import com.cscb525.project.exception.shipment.ShipmentNotFoundException;
 import com.cscb525.project.exception.transportCompany.*;
+import com.cscb525.project.exception.vehicle.VehicleNotFoundException;
 import com.cscb525.project.model.client.Client;
 import com.cscb525.project.model.employee.Employee;
 import com.cscb525.project.model.revenue.TransportCompanyRevenue;
@@ -361,11 +366,11 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         Shipment shipment = findShipmentByIdOrThrow(shipmentId);
 
         if(!shipment.getCompany().equals(company)){
-            throw new CompanyShipmentNotFound(COMPANY_SHIPMENT_NOT_FOUND);
+            throw new CompanyShipmentNotFoundException(COMPANY_SHIPMENT_NOT_FOUND);
         }
 
         if(paymentStatus == null){
-            throw new ShipmentPaymentStatusNotDefined(SHIPMENT_PAYMENT_STATUS_NOT_DEFINED);
+            throw new ShipmentPaymentStatusNotDefinedException(SHIPMENT_PAYMENT_STATUS_NOT_DEFINED);
         }
 
         shipment.setPaymentStatus(paymentStatus);
@@ -404,31 +409,31 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
     private TransportCompany findTransportCompanyByIdOrThrow(int companyId){
         return this.transportCompanyRepository.findById(companyId)
-                .orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND)));
+                .orElseThrow(() -> new TransportCompanyNotFoundException(TRANSPORT_COMPANY_NOT_FOUND));
     }
 
     private Client findClientByIdOrThrow(int clientId){
         return this.clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND));
     }
 
     private TransportCompanyRevenue findTransportCompanyRevenueByIdOrThrow(int revenueId){
         return this.transportCompanyRevenueRepository.findById(revenueId)
-                .orElseThrow(() -> new ResponseStatusException((HttpStatus.NOT_FOUND)));
+                .orElseThrow(() -> new RevenueNotFoundException(REVENUE_NOT_FOUND));
     }
 
     private Vehicle findVehicleByIdOrThrow(int vehicleId){
         return this.vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new VehicleNotFoundException(VEHICLE_NOT_FOUND));
     }
 
     private Employee findEmployeeByIdOrThrow(int employeeId){
         return this.employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new EmployeeNotFoundException(EMPLOYEE_NOT_FOUND));
     }
 
     private Shipment findShipmentByIdOrThrow(int shipmentId){
         return this.shipmentRepository.findById(shipmentId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ShipmentNotFoundException(SHIPMENT_NOT_FOUND));
     }
 }
