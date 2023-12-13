@@ -9,6 +9,10 @@ import com.cscb525.project.dto.shipment.ShipmentDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
+import com.cscb525.project.exception.transportCompany.CargoWeightNotDefinedException;
+import com.cscb525.project.exception.transportCompany.CompanyClientNotFoundException;
+import com.cscb525.project.exception.transportCompany.CompanyEmployeeNotFoundException;
+import com.cscb525.project.exception.transportCompany.CompanyVehicleNotFoundException;
 import com.cscb525.project.model.client.Client;
 import com.cscb525.project.model.employee.Employee;
 import com.cscb525.project.model.revenue.TransportCompanyRevenue;
@@ -27,6 +31,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.cscb525.project.exception.ExceptionTextMessages.*;
 
 @Service
 public class TransportCompanyServiceImpl implements TransportCompanyService {
@@ -321,25 +327,21 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         double cargoWeight = shipmentDto.getCargoWeight();
 
         if(vehicle.getCompany() == null || vehicle.getCompany().getId() != companyId) {
-            // TODO: throw a custom exception that says that the vehicle should be assigned to the company first
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new CompanyVehicleNotFoundException(COMPANY_VEHICLE_NOT_FOUND);
         }
 
         boolean isCompanyClient = client.getCompanies().contains(company);
 
         if(!isCompanyClient) {
-            // TODO: throw a custom exception that says that the client should be assigned to the company first
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new CompanyClientNotFoundException(COMPANY_CLIENT_NOT_FOUND);
         }
 
         if(employee.getCompany() == null || employee.getCompany().getId() != companyId){
-            // TODO: throw a custom exception that says that the employee should be assigned to the company first
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new CompanyEmployeeNotFoundException(COMPANY_EMPLOYEE_NOT_FOUND);
         }
 
         if(cargoType == CargoType.GOODS && cargoWeight <= 0 ){
-            // TODO: throw a custom exception that says that cargoWeight should be specified
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new CargoWeightNotDefinedException(CARGO_WEIGHT_NOT_DEFINED);
         }
 
         Shipment tempShipment = new Shipment();
