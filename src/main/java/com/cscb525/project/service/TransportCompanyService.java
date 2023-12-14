@@ -10,14 +10,21 @@ import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
 import com.cscb525.project.model.shipment.PaymentStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.cscb525.project.model.transportCompany.FilterType;
+import com.cscb525.project.model.transportCompany.SortType;
+import com.cscb525.project.model.transportCompany.SortingAndFilteringCriteria;
 
 import java.util.List;
 
 public interface TransportCompanyService {
 
-    List<TransportCompanyDtoResponse> getAllTransportCompanies();
+    List<TransportCompanyDtoResponse> getAllTransportCompanies(SortType sortType,
+                                                               SortingAndFilteringCriteria sortBy,
+                                                               FilterType filterType,
+                                                               SortingAndFilteringCriteria filterBy,
+                                                               String companyNameToFilterBy,
+                                                               String revenueToFilterBy
+    );
 
     TransportCompanyDtoResponse getTransportCompany(int companyId);
 

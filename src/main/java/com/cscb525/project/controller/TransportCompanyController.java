@@ -10,6 +10,9 @@ import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
 import com.cscb525.project.model.shipment.PaymentStatus;
+import com.cscb525.project.model.transportCompany.FilterType;
+import com.cscb525.project.model.transportCompany.SortType;
+import com.cscb525.project.model.transportCompany.SortingAndFilteringCriteria;
 import com.cscb525.project.service.implementation.TransportCompanyServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +32,19 @@ public class TransportCompanyController {
     }
 
     @GetMapping
-    public List<TransportCompanyDtoResponse> getAllTransportCompanies(){
-        return this.transportCompanyServiceImpl.getAllTransportCompanies();
+    public List<TransportCompanyDtoResponse> getAllTransportCompanies(
+            @RequestParam(name = "sortType", required = false, defaultValue = "ASC") SortType sortType,
+            @RequestParam(name = "sortBy", required = false, defaultValue = "NONE") SortingAndFilteringCriteria sortBy,
+            @RequestParam(name = "filterType", required = false, defaultValue = "EQ") FilterType filterType,
+            @RequestParam(name = "filterBy", required = false, defaultValue = "NONE") SortingAndFilteringCriteria filterBy,
+            @RequestParam(name = "revenue", required = false, defaultValue = "1000") String revenueToFilterBy,
+            @RequestParam(name = "companyName", required = false, defaultValue = "") String companyNameToFilterBy
+    ){
+        return this.transportCompanyServiceImpl.getAllTransportCompanies(sortType, sortBy, filterType, filterBy, companyNameToFilterBy, revenueToFilterBy);
     }
 
     @GetMapping("/{companyId}")
-    public TransportCompanyDtoResponse getTransportCompany(@PathVariable Integer companyId){
+    public TransportCompanyDtoResponse getTransportCompany(@PathVariable int companyId){
         return this.transportCompanyServiceImpl.getTransportCompany(companyId);
     }
 

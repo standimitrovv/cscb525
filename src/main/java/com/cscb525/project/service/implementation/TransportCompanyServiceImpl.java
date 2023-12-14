@@ -21,20 +21,24 @@ import com.cscb525.project.model.revenue.TransportCompanyRevenue;
 import com.cscb525.project.model.shipment.CargoType;
 import com.cscb525.project.model.shipment.PaymentStatus;
 import com.cscb525.project.model.shipment.Shipment;
-import com.cscb525.project.model.transportCompany.TransportCompany;
+import com.cscb525.project.model.transportCompany.*;
 import com.cscb525.project.model.vehicle.Vehicle;
 import com.cscb525.project.repository.*;
 import com.cscb525.project.service.TransportCompanyService;
 import jakarta.annotation.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.cscb525.project.exception.ExceptionTextMessages.*;
 
@@ -73,14 +77,59 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         this.modelMapper = new ModelMapper();
     }
 
-    public List<TransportCompanyDtoResponse> getAllTransportCompanies(){
-        List<TransportCompany> transportCompanies = this.transportCompanyRepository.findAll();
+    public List<TransportCompanyDtoResponse> getAllTransportCompanies(SortType sortType,
+                                                                      SortingAndFilteringCriteria sortBy,
+                                                                      FilterType filterType,
+                                                                      SortingAndFilteringCriteria filterBy,
+                                                                      String companyNameToFilterBy,
+                                                                      String revenueToFilterBy
+    ){
+        // Returns the list of transport companies WITHOUT any sorting or filtering applied
+        if((sortBy == null || sortBy == SortingAndFilteringCriteria.NONE) && (filterBy == null || filterBy == SortingAndFilteringCriteria.NONE)){
+            return convertToList(this.transportCompanyRepository.findAll());
+        }
 
-        return transportCompanies
+//        if(sortBy != null && filterBy != null){
+//            // where filterBy = user entered string
+//            // order by sortBy sortType
+//        }
+//
+        if(filterBy != null && filterBy != SortingAndFilteringCriteria.NONE){
+            if(filterBy == SortingAndFilteringCriteria.NAME){
+                return convertToList(this.transportCompanyRepository.getAllTransportCompaniesByName(companyNameToFilterBy));
+            } else {
+                double revenue = Double.parseDouble(revenueToFilterBy);
+
+                return switch (filterType){
+                    case EQ -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueEqualTo(revenue));
+                    case LT -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThan(revenue));
+                    case LTOEQ -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQTo(revenue));
+                    case MT -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThan(revenue));
+                    case MTOEQ -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanOrEQTo(revenue));
+                };
+            }
+        }
+
+        Sort.Direction sortDirection = Sort.Direction.ASC;
+
+        if(sortType == SortType.DESC){
+            sortDirection = Sort.Direction.DESC;
+        }
+
+        return switch (sortBy){
+            case REVENUE -> sortDirection == Sort.Direction.ASC ?
+                    convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByRevenueASC()) :
+                    convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByRevenueDESC());
+            case NAME -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByName(Sort.by(sortDirection, "name")));
+            default -> convertToList(this.transportCompanyRepository.findAll());
+        };
+    }
+
+    private List<TransportCompanyDtoResponse> convertToList(List<TransportCompany> tcl){
+        return tcl
                 .stream()
-                .map(c -> modelMapper.map(c, TransportCompanyDtoResponse.class))
+                .map(c -> this.modelMapper.map(c, TransportCompanyDtoResponse.class))
                 .collect(Collectors.toList());
-
     }
 
     public TransportCompanyDtoResponse getTransportCompany(int companyId){
