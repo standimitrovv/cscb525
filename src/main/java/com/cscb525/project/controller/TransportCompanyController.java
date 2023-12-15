@@ -180,7 +180,9 @@ public class TransportCompanyController {
 
     // #region COMPANY SHIPMENT
     @GetMapping("/{companyId}/shipment")
-    public Set<ShipmentDtoResponse> getAllCompanyShipments(@PathVariable int companyId){
+    public Set<ShipmentDtoResponse> getAllCompanyShipments(
+            @PathVariable int companyId
+    ){
         return this.transportCompanyServiceImpl.getAllCompanyShipments(companyId);
     }
 
