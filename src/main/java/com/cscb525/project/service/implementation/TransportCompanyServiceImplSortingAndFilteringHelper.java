@@ -121,7 +121,7 @@ public class TransportCompanyServiceImplSortingAndFilteringHelper {
     }
 
     protected List<TransportCompany> sortOrReturnAll(){
-        if(this.sortBy == null || this.sortBy == SortingAndFilteringCriteria.NONE) {
+        if(this.sortBy == null) {
             throw new RuntimeException("SortBy is not initialized in the constructor");
         }
 

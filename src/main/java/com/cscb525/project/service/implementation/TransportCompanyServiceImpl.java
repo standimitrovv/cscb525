@@ -105,6 +105,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                 if(companyNameToFilterBy.isEmpty()){
                     throw new RuntimeException("The 'companyName' field must not be empty");
                 }
+                System.out.println("here");
 
                 return convertToCompanyDtoResponseList(helper.filterByNameAndSort(companyNameToFilterBy));
             } else if (filterBy == SortingAndFilteringCriteria.REVENUE){ // filtered (where) by REVENUE
