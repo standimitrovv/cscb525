@@ -17,12 +17,14 @@ public class TransportCompanyServiceImplSortingAndFilteringHelper {
     protected TransportCompanyServiceImplSortingAndFilteringHelper(FilterType filterType,
                                                                    TransportCompanyRepository tcr){
         this.filterType = filterType;
+        this.sortBy = SortingAndFilteringCriteria.NONE;
         this.sortDirection = Sort.Direction.ASC;
         this.transportCompanyRepository = tcr;
     }
 
     protected TransportCompanyServiceImplSortingAndFilteringHelper(SortingAndFilteringCriteria sortBy,
                                                                    TransportCompanyRepository tcr){
+        this.filterType = null;
         this.sortBy = sortBy;
         this.sortDirection = Sort.Direction.ASC;
         this.transportCompanyRepository = tcr;
