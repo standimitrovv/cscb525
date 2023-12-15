@@ -5,8 +5,7 @@ import lombok.Getter;
 @Getter
 public enum SortType {
     ASC("asc"),
-    DESC("desc"),
-    NONE("none");
+    DESC("desc");
 
     private final String sortType;
 
