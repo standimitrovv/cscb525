@@ -21,7 +21,10 @@ import com.cscb525.project.model.revenue.TransportCompanyRevenue;
 import com.cscb525.project.model.shipment.CargoType;
 import com.cscb525.project.model.shipment.PaymentStatus;
 import com.cscb525.project.model.shipment.Shipment;
-import com.cscb525.project.model.transportCompany.*;
+import com.cscb525.project.model.transportCompany.FilterType;
+import com.cscb525.project.model.transportCompany.SortType;
+import com.cscb525.project.model.transportCompany.SortingAndFilteringCriteria;
+import com.cscb525.project.model.transportCompany.TransportCompany;
 import com.cscb525.project.model.vehicle.Vehicle;
 import com.cscb525.project.repository.*;
 import com.cscb525.project.service.TransportCompanyService;
@@ -34,11 +37,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.ErrorResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.cscb525.project.exception.ExceptionTextMessages.*;
 
@@ -89,19 +89,25 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             return convertToList(this.transportCompanyRepository.findAll());
         }
 
+        Sort.Direction sortDirection = Sort.Direction.ASC;
+
+        if(sortType == SortType.DESC){
+            sortDirection = Sort.Direction.DESC;
+        }
+
         boolean isSortingASC = sortType == SortType.ASC;
 
-        if(sortBy != SortingAndFilteringCriteria.NONE && filterBy != SortingAndFilteringCriteria.NONE){
+        if(sortBy != SortingAndFilteringCriteria.NONE && filterBy != SortingAndFilteringCriteria.NONE) {
             // filtered (Where) by NAME
-            if(filterBy == SortingAndFilteringCriteria.NAME){
+            if (filterBy == SortingAndFilteringCriteria.NAME) {
                 if(sortBy == SortingAndFilteringCriteria.NAME){
-                    return convertToList(isSortingASC ?
-                            this.transportCompanyRepository.getAllTransportCompaniesByNameOrderedASC() :
-                            this.transportCompanyRepository.getAllTransportCompaniesByNameOrderedDESC());
+                    return convertToList(
+                            this.transportCompanyRepository.getAllTransportCompaniesByNameAndNameOrdered(companyNameToFilterBy, Sort.by(sortDirection, "name"))
+                    );
                 } else {
                     return convertToList(isSortingASC ?
-                            this.transportCompanyRepository.getAllTransportCompaniesByRevenueOrderedASC() :
-                            this.transportCompanyRepository.getAllTransportCompaniesByRevenueOrderedDESC());
+                            this.transportCompanyRepository.getAllTransportCompaniesByNameAndRevenueOrderedASC(companyNameToFilterBy) :
+                            this.transportCompanyRepository.getAllTransportCompaniesByNameAndRevenueOrderedDESC(companyNameToFilterBy));
                 }
             } else { // filtered (where) by REVENUE
                 final double revenue = Double.parseDouble(revenueToFilterBy);
@@ -113,10 +119,10 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                                 this.transportCompanyRepository.getAllTransportCompaniesWithRevenueEqualToAndCompanyNameOrderedDESC(revenue));
                         case LT -> convertToList(isSortingASC ?
                                 this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanAndCompanyNameOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanAndCompanyNameOrderedDESC(revenue));                                   );
+                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanAndCompanyNameOrderedDESC(revenue));
                         case LTOEQ -> convertToList(isSortingASC ?
                                 this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQToAndCompanyNameOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQToAndCompanyNameOrderedDESC(revenue));                                    );
+                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQToAndCompanyNameOrderedDESC(revenue));
                         case MT -> convertToList(isSortingASC ?
                                 this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanAndCompanyNameOrderedASC(revenue) :
                                 this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanAndCompanyNameOrderedDESC(revenue));
@@ -143,9 +149,10 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                                 this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanOrEQToAndRevenueOrderedDESC(revenue));
                     };
                 }
+            }
         }
 
-        if(filterBy != null && filterBy != SortingAndFilteringCriteria.NONE){
+        if(filterBy != SortingAndFilteringCriteria.NONE){
             if(filterBy == SortingAndFilteringCriteria.NAME){
                 return convertToList(this.transportCompanyRepository.getAllTransportCompaniesByName(companyNameToFilterBy));
             } else {
@@ -161,12 +168,6 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             }
         }
 
-        Sort.Direction sortDirection = Sort.Direction.ASC;
-
-        if(sortType == SortType.DESC){
-            sortDirection = Sort.Direction.DESC;
-        }
-
         return switch (sortBy){
             case REVENUE -> sortDirection == Sort.Direction.ASC ?
                     convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByRevenueASC()) :
@@ -174,7 +175,6 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             case NAME -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByName(Sort.by(sortDirection, "name")));
             default -> convertToList(this.transportCompanyRepository.findAll());
         };
-    }
     }
 
     private List<TransportCompanyDtoResponse> convertToList(List<TransportCompany> tcl){
@@ -241,7 +241,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         this.transportCompanyRepository.save(transportCompany);
 
         this.transportCompanyRepository.save(transportCompany);
-    };
+    }
 
     public TransportCompanyDtoResponse updateCompanyClient(int companyId, int clientId, ClientDto clientDto){
         TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);

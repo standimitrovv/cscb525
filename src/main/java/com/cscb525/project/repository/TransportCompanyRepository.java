@@ -41,4 +41,81 @@ public interface TransportCompanyRepository extends JpaRepository<TransportCompa
 
     @Query(value = "SELECT t from TransportCompany t JOIN FETCH t.revenues tr ORDER BY tr.revenue DESC")
     List<TransportCompany> getAllTransportCompaniesOrderedByRevenueDESC();
+
+
+    // FILTERING + SORTING/ORDERING
+
+    // FILTER BY NAME
+    @Query(value = "SELECT t FROM TransportCompany t WHERE t.name = :name")
+    List<TransportCompany> getAllTransportCompaniesByNameAndNameOrdered(@Param("name") String name, Sort sort);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN fetch t.revenues tr WHERE t.name = :name ORDER BY tr.revenue ASC")
+    List<TransportCompany> getAllTransportCompaniesByNameAndRevenueOrderedASC(@Param("name") String name);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE t.name = :name ORDER BY tr.revenue DESC")
+    List<TransportCompany> getAllTransportCompaniesByNameAndRevenueOrderedDESC(@Param("name") String name);
+
+    // FILTER BY REVENUE
+
+    // Filter by revenue + Sort by name
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue = :revenue ORDER BY t.name ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueEqualToAndCompanyNameOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue = :revenue ORDER BY t.name DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueEqualToAndCompanyNameOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue < :revenue ORDER BY t.name ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanAndCompanyNameOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue < :revenue ORDER BY t.name DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanAndCompanyNameOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue <= :revenue ORDER BY t.name ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanOrEQToAndCompanyNameOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue <= :revenue ORDER BY t.name DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanOrEQToAndCompanyNameOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue > :revenue ORDER BY t.name ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanAndCompanyNameOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue > :revenue ORDER BY t.name DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanAndCompanyNameOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue >= :revenue ORDER BY t.name ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanOrEQToAndCompanyNameOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue >= :revenue ORDER BY t.name DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanOrEQToAndCompanyNameOrderedDESC(@Param("revenue") double revenue);
+
+    // Filter by revenue + Sort by revenue
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue = :revenue ORDER BY tr.revenue ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueEqualToAndRevenueOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue = :revenue ORDER BY tr.revenue DESC ")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueEqualToAndRevenueOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue < :revenue ORDER BY tr.revenue ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanAndRevenueOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue < :revenue ORDER BY tr.revenue DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanAndRevenueOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue <= :revenue ORDER BY tr.revenue ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanOrEQToAndRevenueOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue <= :revenue ORDER BY tr.revenue DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueLessThanOrEQToAndRevenueOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue > :revenue ORDER BY tr.revenue ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanAndRevenueOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue > :revenue ORDER BY tr.revenue DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanAndRevenueOrderedDESC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue >= :revenue ORDER BY tr.revenue ASC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanOrEQToAndRevenueOrderedASC(@Param("revenue") double revenue);
+
+    @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue >= :revenue ORDER BY tr.revenue DESC")
+    List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanOrEQToAndRevenueOrderedDESC(@Param("revenue") double revenue);
 }
