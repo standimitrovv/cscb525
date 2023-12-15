@@ -86,7 +86,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
     ){
         // Returns the list of transport companies WITHOUT any sorting or filtering applied
         if((sortBy == null || sortBy == SortingAndFilteringCriteria.NONE) && (filterBy == null || filterBy == SortingAndFilteringCriteria.NONE)){
-            return convertToList(this.transportCompanyRepository.findAll());
+            return convertToCompanyDtoResponseList(this.transportCompanyRepository.findAll());
         }
 
         Sort.Direction sortDirection = Sort.Direction.ASC;
@@ -106,11 +106,11 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             // filtered (Where) by NAME
             if (filterBy == SortingAndFilteringCriteria.NAME) {
 
-                return convertToList(helper.filterByNameAndSort(companyNameToFilterBy));
+                return convertToCompanyDtoResponseList(helper.filterByNameAndSort(companyNameToFilterBy));
             } else { // filtered (where) by REVENUE
                 final double revenue = Double.parseDouble(revenueToFilterBy);
 
-                return convertToList(helper.filterByRevenueAndSort(revenue));
+                return convertToCompanyDtoResponseList(helper.filterByRevenueAndSort(revenue));
             }
         }
 
@@ -121,15 +121,15 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             );
 
             if(filterBy == SortingAndFilteringCriteria.NAME){
-                return convertToList(helper.filterByName(companyNameToFilterBy));
+                return convertToCompanyDtoResponseList(helper.filterByName(companyNameToFilterBy));
             } else {
                 double revenue = Double.parseDouble(revenueToFilterBy);
 
-                return convertToList(helper.filterByRevenue(revenue));
+                return convertToCompanyDtoResponseList(helper.filterByRevenue(revenue));
             }
         }
 
-        return convertToList(
+        return convertToCompanyDtoResponseList(
                 new TransportCompanyServiceImplSortingAndFilteringHelper(
                         sortBy,
                         transportCompanyRepository
@@ -137,7 +137,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         );
     }
 
-    private List<TransportCompanyDtoResponse> convertToList(List<TransportCompany> tcl){
+    private List<TransportCompanyDtoResponse> convertToCompanyDtoResponseList(List<TransportCompany> tcl){
         return tcl
                 .stream()
                 .map(c -> this.modelMapper.map(c, TransportCompanyDtoResponse.class))
