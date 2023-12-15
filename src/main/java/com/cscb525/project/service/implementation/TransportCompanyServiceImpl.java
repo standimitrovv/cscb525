@@ -95,86 +95,46 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             sortDirection = Sort.Direction.DESC;
         }
 
-        boolean isSortingASC = sortType == SortType.ASC;
-
         if(sortBy != SortingAndFilteringCriteria.NONE && filterBy != SortingAndFilteringCriteria.NONE) {
+            TransportCompanyServiceImplSortingAndFilteringHelper helper = new TransportCompanyServiceImplSortingAndFilteringHelper(
+                    filterType,
+                    sortBy,
+                    sortDirection,
+                    transportCompanyRepository
+            );
+
             // filtered (Where) by NAME
             if (filterBy == SortingAndFilteringCriteria.NAME) {
-                if(sortBy == SortingAndFilteringCriteria.NAME){
-                    return convertToList(
-                            this.transportCompanyRepository.getAllTransportCompaniesByNameAndNameOrdered(companyNameToFilterBy, Sort.by(sortDirection, "name"))
-                    );
-                } else {
-                    return convertToList(isSortingASC ?
-                            this.transportCompanyRepository.getAllTransportCompaniesByNameAndRevenueOrderedASC(companyNameToFilterBy) :
-                            this.transportCompanyRepository.getAllTransportCompaniesByNameAndRevenueOrderedDESC(companyNameToFilterBy));
-                }
+
+                return convertToList(helper.filterByNameAndSort(companyNameToFilterBy));
             } else { // filtered (where) by REVENUE
                 final double revenue = Double.parseDouble(revenueToFilterBy);
 
-                if(sortBy == SortingAndFilteringCriteria.NAME) {
-                    return switch(filterType){
-                        case EQ -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueEqualToAndCompanyNameOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueEqualToAndCompanyNameOrderedDESC(revenue));
-                        case LT -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanAndCompanyNameOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanAndCompanyNameOrderedDESC(revenue));
-                        case LTOEQ -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQToAndCompanyNameOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQToAndCompanyNameOrderedDESC(revenue));
-                        case MT -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanAndCompanyNameOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanAndCompanyNameOrderedDESC(revenue));
-                        case MTOEQ -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanOrEQToAndCompanyNameOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanOrEQToAndCompanyNameOrderedDESC(revenue));
-                    };
-                } else {
-                    return switch(filterType){
-                        case EQ -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueEqualToAndRevenueOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueEqualToAndRevenueOrderedDESC(revenue));
-                        case LT -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanAndRevenueOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanAndRevenueOrderedDESC(revenue));
-                        case LTOEQ -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQToAndRevenueOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQToAndRevenueOrderedDESC(revenue));
-                        case MT -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanAndRevenueOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanAndRevenueOrderedDESC(revenue));
-                        case MTOEQ -> convertToList(isSortingASC ?
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanOrEQToAndRevenueOrderedASC(revenue) :
-                                this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanOrEQToAndRevenueOrderedDESC(revenue));
-                    };
-                }
+                return convertToList(helper.filterByRevenueAndSort(revenue));
             }
         }
 
         if(filterBy != SortingAndFilteringCriteria.NONE){
+            TransportCompanyServiceImplSortingAndFilteringHelper helper = new TransportCompanyServiceImplSortingAndFilteringHelper(
+                    filterType,
+                    transportCompanyRepository
+            );
+
             if(filterBy == SortingAndFilteringCriteria.NAME){
-                return convertToList(this.transportCompanyRepository.getAllTransportCompaniesByName(companyNameToFilterBy));
+                return convertToList(helper.filterByName(companyNameToFilterBy));
             } else {
                 double revenue = Double.parseDouble(revenueToFilterBy);
 
-                return switch (filterType){
-                    case EQ -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueEqualTo(revenue));
-                    case LT -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThan(revenue));
-                    case LTOEQ -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueLessThanOrEQTo(revenue));
-                    case MT -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThan(revenue));
-                    case MTOEQ -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesWithRevenueMoreThanOrEQTo(revenue));
-                };
+                return convertToList(helper.filterByRevenue(revenue));
             }
         }
 
-        return switch (sortBy){
-            case REVENUE -> sortDirection == Sort.Direction.ASC ?
-                    convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByRevenueASC()) :
-                    convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByRevenueDESC());
-            case NAME -> convertToList(this.transportCompanyRepository.getAllTransportCompaniesOrderedByName(Sort.by(sortDirection, "name")));
-            default -> convertToList(this.transportCompanyRepository.findAll());
-        };
+        return convertToList(
+                new TransportCompanyServiceImplSortingAndFilteringHelper(
+                        sortBy,
+                        transportCompanyRepository
+                ).sortOrReturnAll()
+        );
     }
 
     private List<TransportCompanyDtoResponse> convertToList(List<TransportCompany> tcl){
