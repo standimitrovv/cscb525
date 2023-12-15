@@ -6,6 +6,7 @@ import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDto;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
 import com.cscb525.project.dto.shipment.ShipmentDto;
+import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/company")
@@ -177,6 +179,11 @@ public class TransportCompanyController {
     // #endregion COMPANY EMPLOYEE
 
     // #region COMPANY SHIPMENT
+    @GetMapping("/{companyId}/shipment")
+    public Set<ShipmentDtoResponse> getAllCompanyShipments(@PathVariable int companyId){
+        return this.transportCompanyServiceImpl.getAllCompanyShipments(companyId);
+    }
+
     @PostMapping("/{companyId}/employee/{employeeId}/client/{clientId}/vehicle/{vehicleId}/shipment")
     public TransportCompanyDtoResponse addShipment(
             @PathVariable int companyId,

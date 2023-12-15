@@ -6,6 +6,7 @@ import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDto;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
 import com.cscb525.project.dto.shipment.ShipmentDto;
+import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
@@ -38,6 +39,7 @@ import org.springframework.web.ErrorResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.cscb525.project.exception.ExceptionTextMessages.*;
@@ -379,6 +381,16 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
     // #region COMPANY EMPLOYEE
 
     // #region COMPANY SHIPMENT
+    public Set<ShipmentDtoResponse> getAllCompanyShipments(int companyId){
+        TransportCompany company = this.findTransportCompanyByIdOrThrow(companyId);
+
+        return company
+                .getShipments()
+                .stream()
+                .map(sh -> this.modelMapper.map(sh, ShipmentDtoResponse.class))
+                .collect(Collectors.toSet());
+    }
+
     public TransportCompanyDtoResponse addShipment(int companyId, int employeeId, int clientId, int vehicleId, ShipmentDto shipmentDto){
         TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
 

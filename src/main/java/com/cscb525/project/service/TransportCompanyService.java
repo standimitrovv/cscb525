@@ -6,6 +6,7 @@ import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDto;
 import com.cscb525.project.dto.revenue.TransportCompanyRevenueDtoResponse;
 import com.cscb525.project.dto.shipment.ShipmentDto;
+import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
@@ -15,6 +16,7 @@ import com.cscb525.project.model.transportCompany.SortType;
 import com.cscb525.project.model.transportCompany.SortingAndFilteringCriteria;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TransportCompanyService {
 
@@ -69,6 +71,8 @@ public interface TransportCompanyService {
     // #endregion COMPANY EMPLOYEE
 
     // #region COMPANY SHIPMENT
+    Set<ShipmentDtoResponse> getAllCompanyShipments(int companyId);
+
     TransportCompanyDtoResponse addShipment(int companyId, int employeeId, int clientId, int vehicleId, ShipmentDto shipmentDto);
 
     TransportCompanyDtoResponse updateShipmentPaymentStatus(int companyId, int employeeId, int clientId, int vehicleId, int shipmentId, PaymentStatus paymentStatus);
