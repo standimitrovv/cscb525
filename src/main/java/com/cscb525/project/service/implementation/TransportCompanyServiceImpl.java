@@ -86,11 +86,6 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                                                                       String companyNameToFilterBy,
                                                                       String revenueToFilterBy
     ){
-        // Returns the list of transport companies WITHOUT any sorting or filtering applied
-        if((sortBy == null || sortBy == SortingAndFilteringCriteria.NONE) && (filterBy == null || filterBy == SortingAndFilteringCriteria.NONE)){
-            return convertToCompanyDtoResponseList(this.transportCompanyRepository.findAll());
-        }
-
         Sort.Direction sortDirection = Sort.Direction.ASC;
 
         if(sortType == SortType.DESC){
@@ -107,9 +102,16 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
             // filtered (Where) by NAME
             if (filterBy == SortingAndFilteringCriteria.NAME) {
+                if(companyNameToFilterBy.isEmpty()){
+                    throw new RuntimeException("The 'companyName' field must not be empty");
+                }
 
                 return convertToCompanyDtoResponseList(helper.filterByNameAndSort(companyNameToFilterBy));
-            } else { // filtered (where) by REVENUE
+            } else if (filterBy == SortingAndFilteringCriteria.REVENUE){ // filtered (where) by REVENUE
+                if(revenueToFilterBy.isEmpty()){
+                    throw new RuntimeException("The 'revenue' field must not be empty");
+                }
+
                 final double revenue = Double.parseDouble(revenueToFilterBy);
 
                 return convertToCompanyDtoResponseList(helper.filterByRevenueAndSort(revenue));
@@ -123,8 +125,16 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
             );
 
             if(filterBy == SortingAndFilteringCriteria.NAME){
+                if(companyNameToFilterBy.isEmpty()){
+                    throw new RuntimeException("The 'companyName' field must not be empty");
+                }
+
                 return convertToCompanyDtoResponseList(helper.filterByName(companyNameToFilterBy));
-            } else {
+            } else if (filterBy == SortingAndFilteringCriteria.REVENUE){
+                if(revenueToFilterBy.isEmpty()){
+                    throw new RuntimeException("The 'revenue' field must not be empty");
+                }
+
                 double revenue = Double.parseDouble(revenueToFilterBy);
 
                 return convertToCompanyDtoResponseList(helper.filterByRevenue(revenue));

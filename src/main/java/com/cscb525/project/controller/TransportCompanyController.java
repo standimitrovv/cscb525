@@ -39,7 +39,7 @@ public class TransportCompanyController {
             @RequestParam(name = "sortBy", required = false, defaultValue = "NONE") SortingAndFilteringCriteria sortBy,
             @RequestParam(name = "filterType", required = false, defaultValue = "EQ") FilterType filterType,
             @RequestParam(name = "filterBy", required = false, defaultValue = "NONE") SortingAndFilteringCriteria filterBy,
-            @RequestParam(name = "revenue", required = false, defaultValue = "1000") String revenueToFilterBy,
+            @RequestParam(name = "revenue", required = false, defaultValue = "") String revenueToFilterBy,
             @RequestParam(name = "companyName", required = false, defaultValue = "") String companyNameToFilterBy
     ){
         return this.transportCompanyServiceImpl.getAllTransportCompanies(sortType, sortBy, filterType, filterBy, companyNameToFilterBy, revenueToFilterBy);
