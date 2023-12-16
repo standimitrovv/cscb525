@@ -2,6 +2,7 @@ package com.cscb525.project.repository;
 
 import com.cscb525.project.model.employee.DrivingQualification;
 import com.cscb525.project.model.employee.Employee;
+import jakarta.annotation.Nullable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,23 +25,23 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     // Filtering by driving qualification
     @Query(value = "SELECT e FROM Employee e WHERE e.drivingQualification = :drivingQualification")
-    List<Employee> getAllEmployeesWithDrivingQualification(@Param("drivingQualification") DrivingQualification drivingQualification);
+    List<Employee> getAllEmployeesWithDrivingQualification(@Param("drivingQualification") DrivingQualification drivingQualification, @Nullable Sort sort);
 
     // Filtering by salary
     @Query(value = "SELECT e FROM Employee e WHERE e.salary = :salary")
-    List<Employee> getAllEmployeesWithSalaryEQTo(@Param("salary") double salary);
+    List<Employee> getAllEmployeesWithSalaryEQTo(@Param("salary") double salary, @Nullable Sort sort);
 
     @Query(value = "SELECT e FROM Employee e WHERE e.salary < :salary")
-    List<Employee> getAllEmployeesWithSalaryLessThan(@Param("salary") double salary);
+    List<Employee> getAllEmployeesWithSalaryLessThan(@Param("salary") double salary, @Nullable Sort sort);
 
     @Query(value = "SELECT e FROM Employee e WHERE e.salary <= :salary")
-    List<Employee> getAllEmployeesWithSalaryLessThanOrEQTo(@Param("salary") double salary);
+    List<Employee> getAllEmployeesWithSalaryLessThanOrEQTo(@Param("salary") double salary, @Nullable Sort sort);
 
     @Query(value = "SELECT e FROM Employee e WHERE e.salary > :salary")
-    List<Employee> getAllEmployeesWithSalaryMoreThan(@Param("salary") double salary);
+    List<Employee> getAllEmployeesWithSalaryMoreThan(@Param("salary") double salary, @Nullable Sort sort);
 
     @Query(value = "SELECT e FROM Employee e WHERE e.salary >= :salary")
-    List<Employee> getAllEmployeesWithSalaryMoreThanOrEQTo(@Param("salary") double salary);
+    List<Employee> getAllEmployeesWithSalaryMoreThanOrEQTo(@Param("salary") double salary, @Nullable Sort sort);
 
 
     // SORTING

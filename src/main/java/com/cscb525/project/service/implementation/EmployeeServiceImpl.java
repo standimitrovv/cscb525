@@ -40,58 +40,88 @@ public class EmployeeServiceImpl implements EmployeeService {
             DrivingQualification drivingQualification,
             String salary
     ){
+        // TODO: see if it can be removed bcs of redundancy
         if((filterBy == null || filterBy == SortingAndFilteringCriteria.NONE) && (sortBy == null || sortBy == SortingAndFilteringCriteria.NONE)) {
             return convertToEmployeeDtoResponseList(this.employeeRepository.findAll());
         }
 
-        if(filterBy != SortingAndFilteringCriteria.NONE){
+        if((filterBy == SortingAndFilteringCriteria.SALARY || sortBy == SortingAndFilteringCriteria.SALARY) && salary.isEmpty()){
+            throw new RuntimeException("The 'salary' field must not be empty");
+        }
 
-            assert filterBy != null;
-            return switch (filterBy){
-                case QUALIFICATION -> {
-                    if(drivingQualification == null) {
-                        throw new RuntimeException("The 'qualification' field must not be empty");
-                    }
+        if((filterBy == SortingAndFilteringCriteria.QUALIFICATION || sortBy == SortingAndFilteringCriteria.QUALIFICATION) && drivingQualification == null){
+            throw new RuntimeException("The 'qualification' field must not be empty");
+        }
 
-                    yield this.convertToEmployeeDtoResponseList(
-                            this.employeeRepository.getAllEmployeesWithDrivingQualification(drivingQualification)
-                    );
-                }
-                case SALARY -> {
-                    if(salary.isEmpty()){
-                        throw new RuntimeException("The 'salary' field must not be empty");
-                    }
+        double parsedSalary = Double.parseDouble(salary);
+        Sort.Direction sortDirection = Sort.Direction.ASC;
 
-                    double parsedSalary = Double.parseDouble(salary);
+        if(sortType == SortType.DESC){
+            sortDirection = Sort.Direction.DESC;
+        }
 
-                    yield switch (filterType){
-                        case EQ -> this.convertToEmployeeDtoResponseList(
-                                this.employeeRepository.getAllEmployeesWithSalaryEQTo(parsedSalary)
+        // Filtering AND Sorting at the same time
+        if(filterBy != SortingAndFilteringCriteria.NONE && sortBy != SortingAndFilteringCriteria.NONE) {
+
+            return switch(filterBy){
+                case QUALIFICATION ->
+                        this.convertToEmployeeDtoResponseList(
+                            this.employeeRepository.getAllEmployeesWithDrivingQualification(drivingQualification, Sort.by(sortDirection, "drivingQualification"))
                         );
-                        case LT -> this.convertToEmployeeDtoResponseList(
-                                this.employeeRepository.getAllEmployeesWithSalaryLessThan(parsedSalary)
-                        );
-                        case LTOEQ -> this.convertToEmployeeDtoResponseList(
-                                this.employeeRepository.getAllEmployeesWithSalaryLessThanOrEQTo(parsedSalary)
-                        );
-                        case MT -> this.convertToEmployeeDtoResponseList(
-                                this.employeeRepository.getAllEmployeesWithSalaryMoreThan(parsedSalary)
-                        );
-                        case MTOEQ -> this.convertToEmployeeDtoResponseList(
-                                this.employeeRepository.getAllEmployeesWithSalaryMoreThanOrEQTo(parsedSalary)
-                        );
-                    };
-                }
-                case NONE -> null;
+                case SALARY ->
+                        switch (filterType){
+                            case EQ -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryEQTo(parsedSalary, Sort.by(sortDirection, "salary"))
+                            );
+                            case LT -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryLessThan(parsedSalary, Sort.by(sortDirection, "salary"))
+                            );
+                            case LTOEQ -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryLessThanOrEQTo(parsedSalary, Sort.by(sortDirection, "salary"))
+                            );
+                            case MT -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryMoreThan(parsedSalary, Sort.by(sortDirection, "salary"))
+                            );
+                            case MTOEQ -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryMoreThanOrEQTo(parsedSalary, Sort.by(sortDirection, "salary"))
+                            );
+                        };
+                default -> throw new IllegalStateException("Unexpected value: " + filterBy);
             };
         }
 
-        if(sortBy != SortingAndFilteringCriteria.NONE){
-            Sort.Direction sortDirection = Sort.Direction.ASC;
+        // Filtering ONLY
+        if(filterBy != SortingAndFilteringCriteria.NONE){
 
-            if(sortType == SortType.DESC){
-                sortDirection = Sort.Direction.DESC;
-            }
+            return switch (filterBy){
+                case QUALIFICATION ->
+                        this.convertToEmployeeDtoResponseList(
+                            this.employeeRepository.getAllEmployeesWithDrivingQualification(drivingQualification, null)
+                        );
+                case SALARY ->
+                        switch (filterType){
+                            case EQ -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryEQTo(parsedSalary, null)
+                            );
+                            case LT -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryLessThan(parsedSalary, null)
+                            );
+                            case LTOEQ -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryLessThanOrEQTo(parsedSalary, null)
+                            );
+                            case MT -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryMoreThan(parsedSalary, null)
+                            );
+                            case MTOEQ -> this.convertToEmployeeDtoResponseList(
+                                    this.employeeRepository.getAllEmployeesWithSalaryMoreThanOrEQTo(parsedSalary, null)
+                            );
+                        };
+                default -> throw new IllegalStateException("Unexpected FilterBy value: " + filterBy);
+            };
+        }
+
+        // Sorting ONLY
+        if(sortBy != SortingAndFilteringCriteria.NONE){
 
             return switch (sortBy){
                 case QUALIFICATION -> this.convertToEmployeeDtoResponseList(
@@ -100,7 +130,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 case SALARY -> this.convertToEmployeeDtoResponseList(
                             this.employeeRepository.getAllEmployeesOrderedBySalary(Sort.by(sortDirection, "salary"))
                 );
-                case NONE -> null;
+                default -> throw new IllegalStateException("Unexpected SortBy value: " + sortBy);
             };
         }
 
