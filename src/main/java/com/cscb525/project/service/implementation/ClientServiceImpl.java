@@ -2,6 +2,7 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.client.ClientDto;
 import com.cscb525.project.dto.client.ClientDtoResponse;
+import com.cscb525.project.exception.client.ClientNotFoundException;
 import com.cscb525.project.model.client.Client;
 import com.cscb525.project.repository.ClientRepository;
 import com.cscb525.project.service.ClientService;
@@ -13,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.cscb525.project.exception.ExceptionTextMessages.CLIENT_NOT_FOUND;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -36,7 +39,7 @@ public class ClientServiceImpl implements ClientService {
                 .collect(Collectors.toList());
     }
 
-    public ClientDtoResponse getClient(Integer clientId) {
+    public ClientDtoResponse getClient(int clientId) {
         return modelMapper.map(this.findClientByIdOrThrow(clientId), ClientDtoResponse.class);
     }
 
@@ -47,21 +50,21 @@ public class ClientServiceImpl implements ClientService {
         return modelMapper.map(this.clientRepository.save(tempClient), ClientDtoResponse.class);
     }
 
-    public ClientDtoResponse updateClient(Integer clientId, ClientDto clientDto){
+    public ClientDtoResponse updateClient(int clientId, ClientDto clientDto){
         Client clientFound = this.findClientByIdOrThrow(clientId);
         clientFound.setName(clientDto.getName());
 
         return modelMapper.map(this.clientRepository.save(clientFound), ClientDtoResponse.class);
     }
 
-    public void deleteClient(Integer clientId){
+    public void deleteClient(int clientId){
         Client clientFound = this.findClientByIdOrThrow(clientId);
 
         this.clientRepository.delete(clientFound);
     }
 
-    private Client findClientByIdOrThrow (Integer clientId) {
+    private Client findClientByIdOrThrow (int clientId) {
         return this.clientRepository.findById(clientId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND));
     }
 }

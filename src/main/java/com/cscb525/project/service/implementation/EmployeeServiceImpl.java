@@ -137,7 +137,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee e = this.employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return this.modelMapper.map(e, EmployeeDtoResponse.class);
+        return this.convertToEmployeeDtoResponse(e);
     }
 
     public EmployeeDtoResponse addEmployee(EmployeeDto employeeDto){
@@ -147,15 +147,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         tempEmployee.setSalary(employeeDto.getSalary());
         tempEmployee.setDrivingQualification(employeeDto.getDrivingQualification());
 
-        Employee e = this.employeeRepository.save(tempEmployee);
-
-        return this.modelMapper.map(e, EmployeeDtoResponse.class);
+        return this.convertToEmployeeDtoResponse(this.employeeRepository.save(tempEmployee));
     }
 
     private List<EmployeeDtoResponse> convertToEmployeeDtoResponseList(List<Employee> employeeList){
         return employeeList
                 .stream()
-                .map(e -> this.modelMapper.map(e, EmployeeDtoResponse.class))
+                .map(this::convertToEmployeeDtoResponse)
                 .collect(Collectors.toList());
+    }
+
+    private EmployeeDtoResponse convertToEmployeeDtoResponse(Employee employee){
+        return this.modelMapper.map(employee, EmployeeDtoResponse.class);
     }
 }
