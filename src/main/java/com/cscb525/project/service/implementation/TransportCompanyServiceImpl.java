@@ -152,30 +152,27 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
     private List<TransportCompanyDtoResponse> convertToCompanyDtoResponseList(List<TransportCompany> tcl){
         return tcl
                 .stream()
-                .map(c -> this.modelMapper.map(c, TransportCompanyDtoResponse.class))
+                .map(this::converToTransportCompanyDtoResponse)
                 .collect(Collectors.toList());
     }
 
     public TransportCompanyDtoResponse getTransportCompany(int companyId){
-        TransportCompany transportCompany = this.findTransportCompanyByIdOrThrow(companyId);
 
-        return modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(this.findTransportCompanyByIdOrThrow(companyId));
     }
 
-    public TransportCompanyDtoResponse addTransportCompany(TransportCompanyDto transportCompany) {
-        TransportCompany transportCompanyToAdd = modelMapper.map(transportCompany, TransportCompany.class);
+    public TransportCompanyDtoResponse createNewTransportCompany(TransportCompanyDto transportCompany) {
+        TransportCompany tempTransportCompany = new TransportCompany();
+        tempTransportCompany.setName(transportCompany.getName());
 
-        transportCompanyToAdd.setName(transportCompany.getName());
-
-        return modelMapper.map(this.transportCompanyRepository.save(transportCompanyToAdd), TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(this.transportCompanyRepository.save(tempTransportCompany));
     }
 
-    public TransportCompanyDtoResponse updateTransportCompany(TransportCompanyDto transportCompanyDto, int companyId){
+    public TransportCompanyDtoResponse updateTransportCompany(int companyId, TransportCompanyDto transportCompanyDto){
         TransportCompany transportCompany = this.findTransportCompanyByIdOrThrow(companyId);
-
         transportCompany.setName(transportCompanyDto.getName());
 
-        return modelMapper.map(this.transportCompanyRepository.save(transportCompany), TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(this.transportCompanyRepository.save(transportCompany));
     }
 
     public void deleteTransportCompany(int companyId) {
@@ -185,19 +182,19 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
     }
 
     // #region COMPANY CLIENT
-    public TransportCompanyDtoResponse addClient(int companyId, int clientId){
+    public TransportCompanyDtoResponse addCompanyClient(int companyId, int clientId){
         TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
 
         Client client = findClientByIdOrThrow(clientId);
 
         if(transportCompany.getClients().contains(client)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ClientAlreadyExistsException(COMPANY_CLIENT_ALREADY_EXISTS);
         }
 
         transportCompany.getClients().add(client);
         this.transportCompanyRepository.save(transportCompany);
 
-        return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(transportCompany);
     }
 
     public void deleteCompanyClient(int companyId, int clientId) {
@@ -206,12 +203,10 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         Client client = findClientByIdOrThrow(clientId);
 
         if(!transportCompany.getClients().contains(client)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ClientNotFoundException(COMPANY_CLIENT_NOT_FOUND);
         }
 
         transportCompany.getClients().remove(client);
-        this.transportCompanyRepository.save(transportCompany);
-
         this.transportCompanyRepository.save(transportCompany);
     }
 
@@ -221,35 +216,17 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         Client c = findClientByIdOrThrow(clientId);
 
         if(!transportCompany.getClients().contains(c)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ClientNotFoundException(COMPANY_CLIENT_NOT_FOUND);
         }
 
         c.setName(clientDto.getName());
         this.clientRepository.save(c);
 
-        return this.modelMapper.map(
-                this.transportCompanyRepository.save(transportCompany),
-                TransportCompanyDtoResponse.class
-        );
+        return this.converToTransportCompanyDtoResponse(this.transportCompanyRepository.save(transportCompany));
     }
     // #endregion COMPANY CLIENT
 
     // #region COMPANY REVENUE
-    public TransportCompanyDtoResponse addCompanyRevenue(int companyId, TransportCompanyRevenueDto revenueDto){
-        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
-
-        TransportCompanyRevenue transportCompanyRevenue = new TransportCompanyRevenue();
-
-        transportCompanyRevenue.setTransportCompany(transportCompany);
-        transportCompanyRevenue.setForMonth(revenueDto.getForMonth());
-        transportCompanyRevenue.setRevenue(revenueDto.getRevenue());
-
-        this.transportCompanyRepository.save(transportCompany);
-        this.transportCompanyRevenueRepository.save(transportCompanyRevenue);
-
-        return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
-    }
-
     public List<TransportCompanyRevenueDtoResponse> getAllCompanyRevenues(int companyId){
         TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
 
@@ -260,19 +237,31 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
                 .collect(Collectors.toList());
     }
 
+    public TransportCompanyDtoResponse addCompanyRevenue(int companyId, TransportCompanyRevenueDto revenueDto){
+        TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
+
+        TransportCompanyRevenue transportCompanyRevenue = new TransportCompanyRevenue();
+        transportCompanyRevenue.setTransportCompany(transportCompany);
+        transportCompanyRevenue.setForMonth(revenueDto.getForMonth());
+        transportCompanyRevenue.setRevenue(revenueDto.getRevenue());
+
+        this.transportCompanyRevenueRepository.save(transportCompanyRevenue);
+
+        return this.converToTransportCompanyDtoResponse(transportCompany);
+    }
+
     public List<TransportCompanyRevenueDtoResponse> updateCompanyRevenue(int companyId, int revenueId, TransportCompanyRevenueDto revenueDto){
         TransportCompany transportCompany = findTransportCompanyByIdOrThrow(companyId);
 
         TransportCompanyRevenue tcr = findTransportCompanyRevenueByIdOrThrow(revenueId);
 
         if(!transportCompany.getRevenues().contains(tcr)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new CompanyRevenueNotFoundException(COMPANY_REVENUE_NOT_FOUND);
         }
 
         tcr.setRevenue(revenueDto.getRevenue());
         tcr.setForMonth(revenueDto.getForMonth());
-
-        this.transportCompanyRepository.save(transportCompany);
+        this.transportCompanyRevenueRepository.save(tcr);
 
         return transportCompany
                 .getRevenues()
@@ -287,12 +276,10 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
 
         Vehicle vehicle = findVehicleByIdOrThrow(vehicleId);
-
         vehicle.setCompany(company);
-
         this.vehicleRepository.save(vehicle);
 
-        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(company);
     }
 
     public TransportCompanyDtoResponse updateCompanyVehicle(int companyId, int vehicleId, VehicleDto vehicleDto){
@@ -301,27 +288,25 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         Vehicle vehicle = findVehicleByIdOrThrow(vehicleId);
 
         if(!company.getVehicles().contains(vehicle)){
-            throw new ErrorResponseException(HttpStatus.NOT_FOUND);
+            throw new CompanyVehicleNotFoundException(COMPANY_VEHICLE_NOT_FOUND);
         }
 
         vehicle.setVehicleType(vehicleDto.getVehicleType());
         this.vehicleRepository.save(vehicle);
 
-        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(company);
     }
 
-    public TransportCompanyDtoResponse deleteCompanyVehicle(int companyId, int vehicleId){
+    public void deleteCompanyVehicle(int companyId, int vehicleId){
         TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
 
         Vehicle v = findVehicleByIdOrThrow(vehicleId);
 
         if(!company.getVehicles().contains(v)){
-            throw new ErrorResponseException(HttpStatus.NOT_FOUND);
+            throw new CompanyVehicleNotFoundException(COMPANY_VEHICLE_NOT_FOUND);
         }
 
         this.vehicleRepository.deleteCompany(companyId);
-
-        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
     // #endregion COMPANY VEHICLE
 
@@ -341,10 +326,12 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
         Employee employee = findEmployeeByIdOrThrow(employeeId);
 
-        boolean employeeExists = company.getEmployees().contains(employee);
+        if(employee.getCompany().getId() != companyId){
+            throw new EmployeeWorksForAnotherCompanyException(EMPLOYEE_ALREADY_EMPLOYED);
+        }
 
-        if(employeeExists){
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        if(company.getEmployees().contains(employee)){
+            throw new CompanyEmployeeAlreadyExistsException(COMPANY_EMPLOYEE_ALREADY_EXISTS);
         }
 
         company.getEmployees().add(employee);
@@ -353,7 +340,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         this.employeeRepository.save(employee);
         this.transportCompanyRepository.save(company);
 
-        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(company);
     }
 
     public TransportCompanyDtoResponse updateCompanyEmployee(int companyId, int employeeId, EmployeeDto employeeDto){
@@ -362,31 +349,29 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         Employee e = findEmployeeByIdOrThrow(employeeId);
 
         if(!company.getEmployees().contains(e)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new CompanyEmployeeNotFoundException(COMPANY_EMPLOYEE_NOT_FOUND);
         }
 
         e.setSalary(employeeDto.getSalary());
         e.setDrivingQualification(employeeDto.getDrivingQualification());
         this.employeeRepository.save(e);
 
-        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(company);
     }
 
-    public TransportCompanyDtoResponse deleteCompanyEmployee(int companyId, int employeeId){
+    public void deleteCompanyEmployee(int companyId, int employeeId){
         TransportCompany company = findTransportCompanyByIdOrThrow(companyId);
 
         Employee e = findEmployeeByIdOrThrow(employeeId);
 
         if(!company.getEmployees().contains(e)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new CompanyEmployeeNotFoundException(COMPANY_EMPLOYEE_NOT_FOUND);
         }
 
         company.getEmployees().remove(e);
         this.transportCompanyRepository.save(company);
 
         this.employeeRepository.deleteCompany(companyId);
-
-        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
     }
     // #region COMPANY EMPLOYEE
 
@@ -413,7 +398,11 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         CargoType cargoType = shipmentDto.getCargoType();
         double cargoWeight = shipmentDto.getCargoWeight();
 
-        validateShipment(vehicle, company, client, employee, cargoType, cargoWeight);
+        if(cargoType == CargoType.GOODS && cargoWeight <= 0 ){
+            throw new CargoWeightNotDefinedException(CARGO_WEIGHT_NOT_DEFINED);
+        }
+
+        validateShipment(vehicle, company, client, employee);
 
         Shipment tempShipment = new Shipment();
         tempShipment.setDeparturePoint(shipmentDto.getDeparturePoint());
@@ -431,7 +420,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         Shipment shipment = this.shipmentRepository.save(tempShipment);
 
         company.getShipments().add(shipment);
-        return this.modelMapper.map(this.transportCompanyRepository.save(company), TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(this.transportCompanyRepository.save(company));
     }
 
     public TransportCompanyDtoResponse updateShipmentPaymentStatus(int companyId, int employeeId, int clientId, int vehicleId, int shipmentId, PaymentStatus paymentStatus){
@@ -444,7 +433,7 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
         Vehicle vehicle = findVehicleByIdOrThrow(vehicleId);
 
-        validateShipment(vehicle, company, client, employee, null, 0);
+        validateShipment(vehicle, company, client, employee);
 
         Shipment shipment = findShipmentByIdOrThrow(shipmentId);
 
@@ -460,15 +449,13 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
 
         this.shipmentRepository.save(shipment);
 
-        return this.modelMapper.map(company, TransportCompanyDtoResponse.class);
+        return this.converToTransportCompanyDtoResponse(company);
     }
 
     private void validateShipment(Vehicle vehicle,
                                   TransportCompany company,
                                   Client client,
-                                  Employee employee,
-                                  @Nullable CargoType cargoType,
-                                  double cargoWeight
+                                  Employee employee
     ) {
         if(vehicle.getCompany() == null || vehicle.getCompany().getId() != company.getId()) {
             throw new CompanyVehicleNotFoundException(COMPANY_VEHICLE_NOT_FOUND);
@@ -483,12 +470,12 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
         if(employee.getCompany() == null || employee.getCompany().getId() != company.getId()){
             throw new CompanyEmployeeNotFoundException(COMPANY_EMPLOYEE_NOT_FOUND);
         }
-
-        if(cargoType == CargoType.GOODS && cargoWeight <= 0 ){
-            throw new CargoWeightNotDefinedException(CARGO_WEIGHT_NOT_DEFINED);
-        }
     }
     // #endregion COMPANY SHIPMENT
+
+    private TransportCompanyDtoResponse converToTransportCompanyDtoResponse(TransportCompany transportCompany){
+        return this.modelMapper.map(transportCompany, TransportCompanyDtoResponse.class);
+    }
 
     private TransportCompany findTransportCompanyByIdOrThrow(int companyId){
         return this.transportCompanyRepository.findById(companyId)

@@ -30,14 +30,14 @@ public interface TransportCompanyService {
 
     TransportCompanyDtoResponse getTransportCompany(int companyId);
 
-    TransportCompanyDtoResponse addTransportCompany(TransportCompanyDto transportCompany);
+    TransportCompanyDtoResponse createNewTransportCompany(TransportCompanyDto transportCompany);
 
-    TransportCompanyDtoResponse updateTransportCompany(TransportCompanyDto transportCompanyDto, int companyId);
+    TransportCompanyDtoResponse updateTransportCompany(int companyId, TransportCompanyDto transportCompanyDto);
 
     void deleteTransportCompany(int companyId);
 
     // #region COMPANY CLIENT
-    TransportCompanyDtoResponse addClient(int companyId, int clientId);
+    TransportCompanyDtoResponse addCompanyClient(int companyId, int clientId);
 
     void deleteCompanyClient(int companyId, int clientId);
 
@@ -57,7 +57,7 @@ public interface TransportCompanyService {
 
     TransportCompanyDtoResponse updateCompanyVehicle(int companyId, int vehicleId, VehicleDto vehicleDto);
 
-    TransportCompanyDtoResponse deleteCompanyVehicle(int companyId, int vehicleId);
+    void deleteCompanyVehicle(int companyId, int vehicleId);
     // #endregion COMPANY VEHICLE
 
     // #region COMPANY EMPLOYEE
@@ -67,7 +67,7 @@ public interface TransportCompanyService {
 
     TransportCompanyDtoResponse updateCompanyEmployee(int companyId, int employeeId, EmployeeDto employeeDto);
 
-    TransportCompanyDtoResponse deleteCompanyEmployee(int companyId, int employeeId);
+    void deleteCompanyEmployee(int companyId, int employeeId);
     // #endregion COMPANY EMPLOYEE
 
     // #region COMPANY SHIPMENT

@@ -24,12 +24,12 @@ public class VehicleController {
     }
 
     @GetMapping("/{vehicleId}")
-    public VehicleDtoResponse getVehicle(@PathVariable Integer vehicleId){
+    public VehicleDtoResponse getVehicle(@PathVariable int vehicleId){
         return this.vehicleService.getVehicle(vehicleId);
     }
 
     @PostMapping
-    public VehicleDtoResponse addVehicle(@RequestBody VehicleDto vehicleDto) {
-        return this.vehicleService.addVehicle(vehicleDto);
+    public VehicleDtoResponse createNewVehicle(@RequestBody VehicleDto vehicleDto) {
+        return this.vehicleService.createNewVehicle(vehicleDto);
     }
 }

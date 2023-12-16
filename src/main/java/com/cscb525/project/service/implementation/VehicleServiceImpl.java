@@ -31,23 +31,25 @@ public class VehicleServiceImpl implements VehicleService {
         return this.vehicleRepository
                 .findAll()
                 .stream()
-                .map(v -> modelMapper.map(v, VehicleDtoResponse.class))
+                .map(this::converToVehicleDtoResponse)
                 .collect(Collectors.toList());
     }
 
-    public VehicleDtoResponse getVehicle(Integer vehicleId){
+    public VehicleDtoResponse getVehicle(int vehicleId){
         Vehicle vehicle = this.vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return this.modelMapper.map(vehicle, VehicleDtoResponse.class);
+        return this.converToVehicleDtoResponse(vehicle);
     }
 
-    public VehicleDtoResponse addVehicle(VehicleDto vehicleDto) {
+    public VehicleDtoResponse createNewVehicle(VehicleDto vehicleDto) {
         Vehicle vehicle = new Vehicle();
         vehicle.setVehicleType(vehicleDto.getVehicleType());
 
-        this.vehicleRepository.save(vehicle);
+        return this.converToVehicleDtoResponse(this.vehicleRepository.save(vehicle));
+    }
 
+    private VehicleDtoResponse converToVehicleDtoResponse(Vehicle vehicle){
         return this.modelMapper.map(vehicle, VehicleDtoResponse.class);
     }
 }
