@@ -41,23 +41,17 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public ClientDtoResponse createNewClient(ClientDto clientDto) {
-        Client clientToAdd = modelMapper.map(clientDto, Client.class);
+        Client tempClient = new Client();
+        tempClient.setName(clientDto.getName());
 
-        clientToAdd.setName(clientDto.getName());
-
-        this.clientRepository.save(clientToAdd);
-
-        return modelMapper.map(clientToAdd, ClientDtoResponse.class);
+        return modelMapper.map(this.clientRepository.save(tempClient), ClientDtoResponse.class);
     }
 
     public ClientDtoResponse updateClient(Integer clientId, ClientDto clientDto){
         Client clientFound = this.findClientByIdOrThrow(clientId);
-
         clientFound.setName(clientDto.getName());
 
-        Client savedClient = this.clientRepository.save(clientFound);
-
-        return modelMapper.map(savedClient, ClientDtoResponse.class);
+        return modelMapper.map(this.clientRepository.save(clientFound), ClientDtoResponse.class);
     }
 
     public void deleteClient(Integer clientId){
