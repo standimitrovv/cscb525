@@ -2,6 +2,7 @@ package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.employee.EmployeeDto;
 import com.cscb525.project.dto.employee.EmployeeDtoResponse;
+import com.cscb525.project.exception.employee.EmployeeNotFoundException;
 import com.cscb525.project.model.employee.DrivingQualification;
 import com.cscb525.project.model.employee.Employee;
 import com.cscb525.project.model.employee.SortType;
@@ -18,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.cscb525.project.exception.ExceptionTextMessages.EMPLOYEE_NOT_FOUND;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -135,7 +138,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public EmployeeDtoResponse getEmployee(int employeeId){
         Employee e = this.employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new EmployeeNotFoundException(EMPLOYEE_NOT_FOUND));
 
         return this.convertToEmployeeDtoResponse(e);
     }

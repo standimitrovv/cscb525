@@ -47,13 +47,13 @@ public class ShipmentServiceImpl implements ShipmentService {
                 }
 
                 return switch (filterType){
-                    case EQ -> this.convertToListDtoResponse(
+                    case EQ -> this.convertToShipmentDtoResponseList(
                             this.shipmentRepository.getAllShipmentsWithDestinationEQToAndDestinationOrdered(destination, Sort.by(sortDirection, "destination"))
                     );
-                    case STARTS_WITH -> this.convertToListDtoResponse(
+                    case STARTS_WITH -> this.convertToShipmentDtoResponseList(
                             this.shipmentRepository.getAllShipmentsWithDestinationStartingWithAndDestinationOrdered(destination, Sort.by(sortDirection, "destination"))
                     );
-                    case ENDS_WITH -> this.convertToListDtoResponse(
+                    case ENDS_WITH -> this.convertToShipmentDtoResponseList(
                             this.shipmentRepository.getAllShipmentsWithDestinationEndingWithAndDestinationOrdered(destination, Sort.by(sortDirection, "destination"))
                     );
                 };
@@ -67,13 +67,13 @@ public class ShipmentServiceImpl implements ShipmentService {
             }
 
             return switch(filterType) {
-                case EQ -> this.convertToListDtoResponse(
+                case EQ -> this.convertToShipmentDtoResponseList(
                         this.shipmentRepository.getAllShipmentsWithDestinationEQTo(destination)
                 );
-                case STARTS_WITH -> this.convertToListDtoResponse(
+                case STARTS_WITH -> this.convertToShipmentDtoResponseList(
                         this.shipmentRepository.getAllShipmentsWithDestinationStartingWith(destination)
                 );
-                case ENDS_WITH -> this.convertToListDtoResponse(
+                case ENDS_WITH -> this.convertToShipmentDtoResponseList(
                         this.shipmentRepository.getAllShipmentsWithDestinationEndingWith(destination)
                 );
             };
@@ -81,16 +81,16 @@ public class ShipmentServiceImpl implements ShipmentService {
 
         // Only sorting
         if(sortBy == SortingAndFilteringCriteria.DESTINATION) {
-            return this.convertToListDtoResponse(
+            return this.convertToShipmentDtoResponseList(
                     this.shipmentRepository.getAllShipmentsOrderedByDestination(Sort.by(sortDirection, "destination"))
             );
         }
 
         // Neither filtering NOR sorting
-        return this.convertToListDtoResponse(this.shipmentRepository.findAll());
+        return this.convertToShipmentDtoResponseList(this.shipmentRepository.findAll());
     }
 
-    private List<ShipmentDtoResponse> convertToListDtoResponse(List<Shipment> shipments){
+    private List<ShipmentDtoResponse> convertToShipmentDtoResponseList(List<Shipment> shipments){
         return shipments
                 .stream()
                 .map(sh -> this.modelMapper.map(sh, ShipmentDtoResponse.class))
