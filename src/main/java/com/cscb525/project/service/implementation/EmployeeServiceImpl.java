@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-    public List<EmployeeDtoResponse> getEmployees(){
+    public List<EmployeeDtoResponse> getAllEmployees(){
         List<Employee> employees = this.employeeRepository.findAll();
 
         return employees
