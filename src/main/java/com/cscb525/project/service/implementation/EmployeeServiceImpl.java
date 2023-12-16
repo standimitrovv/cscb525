@@ -40,11 +40,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             DrivingQualification drivingQualification,
             String salary
     ){
-        // TODO: see if it can be removed bcs of redundancy
-        if((filterBy == null || filterBy == SortingAndFilteringCriteria.NONE) && (sortBy == null || sortBy == SortingAndFilteringCriteria.NONE)) {
-            return convertToEmployeeDtoResponseList(this.employeeRepository.findAll());
-        }
-
         if((filterBy == SortingAndFilteringCriteria.SALARY || sortBy == SortingAndFilteringCriteria.SALARY) && salary.isEmpty()){
             throw new RuntimeException("The 'salary' field must not be empty");
         }
@@ -53,7 +48,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new RuntimeException("The 'qualification' field must not be empty");
         }
 
-        double parsedSalary = Double.parseDouble(salary);
         Sort.Direction sortDirection = Sort.Direction.ASC;
 
         if(sortType == SortType.DESC){
@@ -62,6 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // Filtering AND Sorting at the same time
         if(filterBy != SortingAndFilteringCriteria.NONE && sortBy != SortingAndFilteringCriteria.NONE) {
+            final double parsedSalary = Double.parseDouble(salary);
 
             return switch(filterBy){
                 case QUALIFICATION ->
@@ -92,6 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // Filtering ONLY
         if(filterBy != SortingAndFilteringCriteria.NONE){
+            final double parsedSalary = Double.parseDouble(salary);
 
             return switch (filterBy){
                 case QUALIFICATION ->
@@ -134,7 +130,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             };
         }
 
-        return convertToEmployeeDtoResponseList(this.employeeRepository.findAll());
+        return this.convertToEmployeeDtoResponseList(this.employeeRepository.findAll());
     }
 
     public EmployeeDtoResponse getEmployee(int employeeId){
