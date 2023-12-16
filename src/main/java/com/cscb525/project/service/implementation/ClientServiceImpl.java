@@ -35,26 +35,26 @@ public class ClientServiceImpl implements ClientService {
 
         return clients
                 .stream()
-                .map(c -> modelMapper.map(c, ClientDtoResponse.class))
+                .map(this::convertToClientDtoResponse)
                 .collect(Collectors.toList());
     }
 
     public ClientDtoResponse getClient(int clientId) {
-        return modelMapper.map(this.findClientByIdOrThrow(clientId), ClientDtoResponse.class);
+        return this.convertToClientDtoResponse(this.findClientByIdOrThrow(clientId));
     }
 
     public ClientDtoResponse createNewClient(ClientDto clientDto) {
         Client tempClient = new Client();
         tempClient.setName(clientDto.getName());
 
-        return modelMapper.map(this.clientRepository.save(tempClient), ClientDtoResponse.class);
+        return this.convertToClientDtoResponse(this.clientRepository.save(tempClient));
     }
 
     public ClientDtoResponse updateClient(int clientId, ClientDto clientDto){
         Client clientFound = this.findClientByIdOrThrow(clientId);
         clientFound.setName(clientDto.getName());
 
-        return modelMapper.map(this.clientRepository.save(clientFound), ClientDtoResponse.class);
+        return this.convertToClientDtoResponse(clientFound);
     }
 
     public void deleteClient(int clientId){
@@ -66,5 +66,9 @@ public class ClientServiceImpl implements ClientService {
     private Client findClientByIdOrThrow (int clientId) {
         return this.clientRepository.findById(clientId)
                 .orElseThrow(() -> new ClientNotFoundException(CLIENT_NOT_FOUND));
+    }
+
+    private ClientDtoResponse convertToClientDtoResponse(Client client){
+        return this.modelMapper.map(client, ClientDtoResponse.class);
     }
 }
