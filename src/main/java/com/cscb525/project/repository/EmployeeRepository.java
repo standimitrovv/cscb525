@@ -2,6 +2,7 @@ package com.cscb525.project.repository;
 
 import com.cscb525.project.model.employee.DrivingQualification;
 import com.cscb525.project.model.employee.Employee;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -40,4 +41,15 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query(value = "SELECT e FROM Employee e WHERE e.salary >= :salary")
     List<Employee> getAllEmployeesWithSalaryMoreThanOrEQTo(@Param("salary") double salary);
+
+
+    // SORTING
+
+    // Sorting by driving qualification
+    @Query(value = "SELECT e FROM Employee e")
+    List<Employee> getAllEmployeesOrderedByQualification(Sort sort);
+
+    // Sorting by salary
+    @Query(value = "SELECT e FROM Employee e")
+    List<Employee> getAllEmployeesOrderedBySalary(Sort sort);
 }

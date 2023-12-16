@@ -4,12 +4,14 @@ import com.cscb525.project.dto.employee.EmployeeDto;
 import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.model.employee.DrivingQualification;
 import com.cscb525.project.model.employee.Employee;
+import com.cscb525.project.model.employee.SortType;
 import com.cscb525.project.model.employee.SortingAndFilteringCriteria;
 import com.cscb525.project.model.transportCompany.FilterType;
 import com.cscb525.project.repository.EmployeeRepository;
 import com.cscb525.project.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,15 +35,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeDtoResponse> getAllEmployees(
             SortingAndFilteringCriteria filterBy,
             FilterType filterType,
+            SortingAndFilteringCriteria sortBy,
+            SortType sortType,
             DrivingQualification drivingQualification,
             String salary
     ){
-        if(filterBy == null || filterBy == SortingAndFilteringCriteria.NONE) {
+        if((filterBy == null || filterBy == SortingAndFilteringCriteria.NONE) && (sortBy == null || sortBy == SortingAndFilteringCriteria.NONE)) {
             return convertToEmployeeDtoResponseList(this.employeeRepository.findAll());
         }
 
         if(filterBy != SortingAndFilteringCriteria.NONE){
 
+            assert filterBy != null;
             return switch (filterBy){
                 case QUALIFICATION -> {
                     if(drivingQualification == null) {
@@ -60,23 +65,41 @@ public class EmployeeServiceImpl implements EmployeeService {
                     double parsedSalary = Double.parseDouble(salary);
 
                     yield switch (filterType){
-                        case EQ -> convertToEmployeeDtoResponseList(
+                        case EQ -> this.convertToEmployeeDtoResponseList(
                                 this.employeeRepository.getAllEmployeesWithSalaryEQTo(parsedSalary)
                         );
-                        case LT -> convertToEmployeeDtoResponseList(
+                        case LT -> this.convertToEmployeeDtoResponseList(
                                 this.employeeRepository.getAllEmployeesWithSalaryLessThan(parsedSalary)
                         );
-                        case LTOEQ -> convertToEmployeeDtoResponseList(
+                        case LTOEQ -> this.convertToEmployeeDtoResponseList(
                                 this.employeeRepository.getAllEmployeesWithSalaryLessThanOrEQTo(parsedSalary)
                         );
-                        case MT -> convertToEmployeeDtoResponseList(
+                        case MT -> this.convertToEmployeeDtoResponseList(
                                 this.employeeRepository.getAllEmployeesWithSalaryMoreThan(parsedSalary)
                         );
-                        case MTOEQ -> convertToEmployeeDtoResponseList(
+                        case MTOEQ -> this.convertToEmployeeDtoResponseList(
                                 this.employeeRepository.getAllEmployeesWithSalaryMoreThanOrEQTo(parsedSalary)
                         );
                     };
                 }
+                case NONE -> null;
+            };
+        }
+
+        if(sortBy != SortingAndFilteringCriteria.NONE){
+            Sort.Direction sortDirection = Sort.Direction.ASC;
+
+            if(sortType == SortType.DESC){
+                sortDirection = Sort.Direction.DESC;
+            }
+
+            return switch (sortBy){
+                case QUALIFICATION -> this.convertToEmployeeDtoResponseList(
+                            this.employeeRepository.getAllEmployeesOrderedByQualification(Sort.by(sortDirection, "drivingQualification"))
+                );
+                case SALARY -> this.convertToEmployeeDtoResponseList(
+                            this.employeeRepository.getAllEmployeesOrderedBySalary(Sort.by(sortDirection, "salary"))
+                );
                 case NONE -> null;
             };
         }
