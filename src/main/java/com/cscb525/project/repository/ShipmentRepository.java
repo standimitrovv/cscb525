@@ -43,4 +43,35 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Integer> {
 
     @Query(value = "SELECT sh FROM Shipment sh WHERE sh.destination like %:destination")
     List<Shipment> getAllShipmentsWithDestinationEndingWithAndDestinationOrdered(@Param("destination") String destination, Sort sort);
+
+
+    // Specific Check-ups
+    @Query(value = "SELECT t.name, COUNT(sh) " +
+            "FROM Shipment sh " +
+            "JOIN FETCH TransportCompany t " +
+            "ON t.id = sh.company.id " +
+            "GROUP BY t.name")
+    List<Object[]> getTotalCompanyShipmentsCount();
+
+    @Query(value = "SELECT t.name, COUNT(sh.id), SUM(sh.price) " +
+            "FROM Shipment sh " +
+            "JOIN FETCH TransportCompany t " +
+            "ON t.id = sh.company.id " +
+            "GROUP BY t.name")
+    List<Object[]> getTotalCompanyShipmentsCountAndSum();
+
+    @Query(value = "SELECT e.name, COUNT(*) " +
+            "FROM Shipment sh " +
+            "JOIN FETCH Employee e " +
+            "ON sh.employee.id = e.id " +
+            "GROUP BY e.name")
+    List<Object[]> getEmployeeAndShipmentsCount();
+
+    @Query(value = "SELECT e.name, sh.paymentStatus, SUM(sh.price) " +
+            "FROM Shipment sh " +
+            "JOIN FETCH Employee e " +
+            "ON sh.employee.id = e.id " +
+            "GROUP BY e.name, sh.paymentStatus " +
+            "HAVING sh.paymentStatus = 'PAID'")
+    List<Object[]> getTotalRevenueFromEmployee();
 }

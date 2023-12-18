@@ -10,6 +10,7 @@ import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
+import com.cscb525.project.model.revenue.Months;
 import com.cscb525.project.model.shipment.PaymentStatus;
 import com.cscb525.project.model.transportCompany.FilterType;
 import com.cscb525.project.model.transportCompany.SortType;
@@ -29,6 +30,8 @@ public interface TransportCompanyService {
     );
 
     TransportCompanyDtoResponse getTransportCompany(int companyId);
+
+    List<Object[]> getCompanyRevenueForMonth(Months forMonth);
 
     TransportCompanyDtoResponse createNewTransportCompany(TransportCompanyDto transportCompany);
 

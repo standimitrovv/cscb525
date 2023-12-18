@@ -10,12 +10,12 @@ import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDto;
 import com.cscb525.project.dto.transportCompany.TransportCompanyDtoResponse;
 import com.cscb525.project.dto.vehicle.VehicleDto;
+import com.cscb525.project.model.revenue.Months;
 import com.cscb525.project.model.shipment.PaymentStatus;
 import com.cscb525.project.model.transportCompany.FilterType;
 import com.cscb525.project.model.transportCompany.SortType;
 import com.cscb525.project.model.transportCompany.SortingAndFilteringCriteria;
 import com.cscb525.project.service.implementation.TransportCompanyServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +48,13 @@ public class TransportCompanyController {
     @GetMapping("/{companyId}")
     public TransportCompanyDtoResponse getTransportCompany(@PathVariable int companyId){
         return this.transportCompanyServiceImpl.getTransportCompany(companyId);
+    }
+
+    @GetMapping("/check-ups")
+    public List<Object[]> getCompanyRevenueForMonth(
+            @RequestParam(name = "forMonth", required = true) Months forMonth
+    ){
+        return this.transportCompanyServiceImpl.getCompanyRevenueForMonth(forMonth);
     }
 
     @PostMapping

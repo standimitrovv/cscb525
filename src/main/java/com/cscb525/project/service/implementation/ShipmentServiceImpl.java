@@ -1,10 +1,7 @@
 package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
-import com.cscb525.project.model.shipment.FilterType;
-import com.cscb525.project.model.shipment.Shipment;
-import com.cscb525.project.model.shipment.SortType;
-import com.cscb525.project.model.shipment.SortingAndFilteringCriteria;
+import com.cscb525.project.model.shipment.*;
 import com.cscb525.project.repository.ShipmentRepository;
 import com.cscb525.project.service.ShipmentService;
 import org.modelmapper.ModelMapper;
@@ -22,7 +19,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Autowired
     public ShipmentServiceImpl(ShipmentRepository shipmentRepository){
-        this.shipmentRepository=shipmentRepository;
+        this.shipmentRepository = shipmentRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -89,6 +86,16 @@ public class ShipmentServiceImpl implements ShipmentService {
         // Neither filtering NOR sorting
         return this.convertToShipmentDtoResponseList(this.shipmentRepository.findAll());
     }
+
+
+    public List<Object[]> getSpecialCheckUpsByType(CheckUpTypes checkUpType){
+        return switch(checkUpType){
+                    case TOTAL_SHIPMENTS_COUNT -> this.shipmentRepository.getTotalCompanyShipmentsCount();
+                    case TOTAL_SHIPMENTS_COUNT_AND_SUM -> this.shipmentRepository.getTotalCompanyShipmentsCountAndSum();
+                    case EMPLOYEE_SHIPMENTS_COUNT -> this.shipmentRepository.getEmployeeAndShipmentsCount();
+                    case REVENUE_FROM_EMPLOYEE -> this.shipmentRepository.getTotalRevenueFromEmployee();
+        };
+    };
 
     private List<ShipmentDtoResponse> convertToShipmentDtoResponseList(List<Shipment> shipments){
         return shipments

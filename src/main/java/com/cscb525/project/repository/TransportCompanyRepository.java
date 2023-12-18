@@ -1,5 +1,6 @@
 package com.cscb525.project.repository;
 
+import com.cscb525.project.model.revenue.Months;
 import com.cscb525.project.model.transportCompany.TransportCompany;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -118,4 +119,14 @@ public interface TransportCompanyRepository extends JpaRepository<TransportCompa
 
     @Query(value = "SELECT t FROM TransportCompany t JOIN FETCH t.revenues tr WHERE tr.revenue >= :revenue ORDER BY tr.revenue DESC")
     List<TransportCompany> getAllTransportCompaniesWithRevenueMoreThanOrEQToAndRevenueOrderedDESC(@Param("revenue") double revenue);
+
+
+    // Specific Check-ups
+    @Query(value = "SELECT c.name, SUM(r.revenue), r.forMonth " +
+            "FROM TransportCompany c " +
+            "JOIN FETCH TransportCompanyRevenue r " +
+            "ON c.id = r.transportCompany.id " +
+            "GROUP BY r.forMonth, c.name " +
+            "HAVING r.forMonth = :forMonth")
+    List<Object[]> getCompanyRevenueForMonth(@Param("forMonth") Months forMonth);
 }

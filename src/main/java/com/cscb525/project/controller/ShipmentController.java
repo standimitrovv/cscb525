@@ -1,6 +1,7 @@
 package com.cscb525.project.controller;
 
 import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
+import com.cscb525.project.model.shipment.CheckUpTypes;
 import com.cscb525.project.model.shipment.FilterType;
 import com.cscb525.project.model.shipment.SortType;
 import com.cscb525.project.model.shipment.SortingAndFilteringCriteria;
@@ -32,5 +33,12 @@ public class ShipmentController {
             @RequestParam(name = "destination", required = false, defaultValue = "") String destination
     ){
         return this.shipmentService.getAllShipments(filterBy, filterType, sortBy, sortType, destination);
+    }
+
+    @GetMapping("/check-ups")
+    public List<Object[]> getSpecialCheckUpsByType(
+            @RequestParam(name = "checkUpType", required = false, defaultValue = "TOTAL_SHIPMENTS_COUNT") CheckUpTypes checkUpType
+    ){
+        return this.shipmentService.getSpecialCheckUpsByType(checkUpType);
     }
 }

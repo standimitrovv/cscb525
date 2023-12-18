@@ -18,6 +18,7 @@ import com.cscb525.project.exception.transportCompany.*;
 import com.cscb525.project.exception.vehicle.VehicleNotFoundException;
 import com.cscb525.project.model.client.Client;
 import com.cscb525.project.model.employee.Employee;
+import com.cscb525.project.model.revenue.Months;
 import com.cscb525.project.model.revenue.TransportCompanyRevenue;
 import com.cscb525.project.model.shipment.CargoType;
 import com.cscb525.project.model.shipment.PaymentStatus;
@@ -29,14 +30,10 @@ import com.cscb525.project.model.transportCompany.TransportCompany;
 import com.cscb525.project.model.vehicle.Vehicle;
 import com.cscb525.project.repository.*;
 import com.cscb525.project.service.TransportCompanyService;
-import jakarta.annotation.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.ErrorResponseException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Set;
@@ -159,6 +156,10 @@ public class TransportCompanyServiceImpl implements TransportCompanyService {
     public TransportCompanyDtoResponse getTransportCompany(int companyId){
 
         return this.converToTransportCompanyDtoResponse(this.findTransportCompanyByIdOrThrow(companyId));
+    }
+
+    public List<Object[]> getCompanyRevenueForMonth(Months forMonth){
+        return this.transportCompanyRepository.getCompanyRevenueForMonth(forMonth);
     }
 
     public TransportCompanyDtoResponse createNewTransportCompany(TransportCompanyDto transportCompany) {

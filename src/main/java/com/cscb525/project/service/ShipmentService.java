@@ -1,6 +1,7 @@
 package com.cscb525.project.service;
 
 import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
+import com.cscb525.project.model.shipment.CheckUpTypes;
 import com.cscb525.project.model.shipment.FilterType;
 import com.cscb525.project.model.shipment.SortType;
 import com.cscb525.project.model.shipment.SortingAndFilteringCriteria;
@@ -15,4 +16,6 @@ public interface ShipmentService {
                                               SortType sortType,
                                               String destination
     );
+
+    List<Object[]> getSpecialCheckUpsByType(CheckUpTypes checkUpType);
 }
