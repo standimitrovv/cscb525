@@ -18,6 +18,30 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(Exception e){
         HttpStatus status = HttpStatus.NOT_IMPLEMENTED;
 
+        switch(e.getClass().getSimpleName()){
+            case "CompanyVehicleNotFoundException",
+                    "CompanyClientNotFoundException",
+                    "CompanyEmployeeNotFoundException",
+                    "CargoWeightNotDefinedException",
+                    "CompanyRevenueNotFoundException",
+                    "ShipmentPaymentStatusNotDefinedException",
+                    "CompanyShipmentNotFoundException",
+                    "TransportCompanyNotFoundException",
+                    "VehicleNotFoundException",
+                    "ClientNotFoundException",
+                    "ShipmentNotFoundException",
+                    "RevenueNotFoundException",
+                    "EmployeeNotFoundException":
+                status = HttpStatus.NOT_FOUND;
+                break;
+            case "ClientAlreadyExistsException",
+                    "CompanyEmployeeAlreadyExistsException",
+                    "EmployeeWorksForAnotherCompanyException":
+                status = HttpStatus.CONFLICT;
+                break;
+        }
+
+
         return exceptionHandling(e.getMessage(), status);
     }
 
