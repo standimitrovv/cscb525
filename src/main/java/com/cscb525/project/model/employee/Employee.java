@@ -21,7 +21,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="name", nullable = false)
+    @Column(name="employee_name", nullable = false)
     private String name;
 
     @Column(name="driving_qualification", nullable = false)

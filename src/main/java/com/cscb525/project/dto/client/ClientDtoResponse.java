@@ -14,10 +14,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientDtoResponse {
-    @NotBlank
     private int id;
 
-    @NotBlank
     private String name;
 
     private Set<ShipmentDtoResponse> shipments;

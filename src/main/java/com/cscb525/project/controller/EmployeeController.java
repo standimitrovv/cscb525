@@ -7,13 +7,14 @@ import com.cscb525.project.model.employee.SortType;
 import com.cscb525.project.model.employee.SortingAndFilteringCriteria;
 import com.cscb525.project.model.transportCompany.FilterType;
 import com.cscb525.project.service.implementation.EmployeeServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
     private final EmployeeServiceImpl employeeService;
 
@@ -47,7 +48,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public EmployeeDtoResponse addEmployee(@RequestBody EmployeeDto employeeDto){
+    public EmployeeDtoResponse addEmployee(@RequestBody @Valid EmployeeDto employeeDto){
         return this.employeeService.addEmployee(employeeDto);
     }
 }

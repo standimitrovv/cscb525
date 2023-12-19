@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientDto {
-    @NotBlank(message = "Client name cannot be blank!")
+    @NotBlank(message = "The 'name' field cannot be blank!")
     @Size(min = 2, max = 25, message = "The 'name' field has to contain at least 2 and at most 25 characters!")
     private String name;
 }

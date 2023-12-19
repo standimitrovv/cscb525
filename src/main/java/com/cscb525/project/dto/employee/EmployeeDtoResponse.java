@@ -17,17 +17,13 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDtoResponse {
-    @NotBlank
     private int id;
 
-    @NotBlank
     private String name;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private DrivingQualification drivingQualification;
 
-    @NotBlank
     private double salary;
 
     private Set<ShipmentDtoResponse> shipments;
