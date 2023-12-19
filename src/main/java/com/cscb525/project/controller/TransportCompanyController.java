@@ -72,9 +72,9 @@ public class TransportCompanyController {
     }
 
     @DeleteMapping("/{companyId}")
-    public ResponseEntity<Void> deleteTransportCompany(@PathVariable int companyId) {
+    public ResponseEntity<String> deleteTransportCompany(@PathVariable int companyId) {
         this.transportCompanyServiceImpl.deleteTransportCompany(companyId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Transport company was successfully deleted!");
     }
 
     // #region COMPANY CLIENT
@@ -92,12 +92,12 @@ public class TransportCompanyController {
     }
 
     @DeleteMapping("/{companyId}/client/{clientId}")
-    public ResponseEntity<Void> deleteCompanyClient(
+    public ResponseEntity<String> deleteCompanyClient(
             @PathVariable int companyId,
             @PathVariable int clientId
     ){
         this.transportCompanyServiceImpl.deleteCompanyClient(companyId, clientId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Company client was successfully deleted!");
     }
     // #endregion COMPANY CLIENT
 
@@ -146,12 +146,12 @@ public class TransportCompanyController {
     }
 
     @DeleteMapping("/{companyId}/vehicle/{vehicleId}")
-    public ResponseEntity<Void> deleteCompanyVehicle(
+    public ResponseEntity<String> deleteCompanyVehicle(
             @PathVariable int companyId,
             @PathVariable int vehicleId
     ) {
         this.transportCompanyServiceImpl.deleteCompanyVehicle(companyId, vehicleId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Company vehicle was successfully deleted!");
     }
     // #endregion COMPANY VEHICLE
 
@@ -179,12 +179,12 @@ public class TransportCompanyController {
     }
 
     @DeleteMapping("/{companyId}/employee/{employeeId}")
-    public ResponseEntity<Void> deleteCompanyEmployee(
+    public ResponseEntity<String> deleteCompanyEmployee(
             @PathVariable int companyId,
             @PathVariable int employeeId
     ) {
         this.transportCompanyServiceImpl.deleteCompanyEmployee(companyId, employeeId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Company employee was successfully deleted!");
     }
 
     // #endregion COMPANY EMPLOYEE
