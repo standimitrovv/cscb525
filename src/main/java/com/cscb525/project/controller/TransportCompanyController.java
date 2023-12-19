@@ -140,7 +140,7 @@ public class TransportCompanyController {
     public TransportCompanyDtoResponse updateCompanyVehicle(
             @PathVariable int companyId,
             @PathVariable int vehicleId,
-            @RequestBody VehicleDto vehicleDto
+            @RequestBody @Valid VehicleDto vehicleDto
     ) {
         return this.transportCompanyServiceImpl.updateCompanyVehicle(companyId, vehicleId, vehicleDto);
     }
@@ -173,7 +173,7 @@ public class TransportCompanyController {
     public TransportCompanyDtoResponse updateCompanyEmployee(
             @PathVariable int companyId,
             @PathVariable int employeeId,
-            @RequestBody EmployeeDto employeeDto
+            @RequestBody @Valid EmployeeDto employeeDto
     ) {
         return this.transportCompanyServiceImpl.updateCompanyEmployee(companyId, employeeId, employeeDto);
     }

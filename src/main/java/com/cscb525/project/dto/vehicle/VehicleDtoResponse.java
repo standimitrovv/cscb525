@@ -15,10 +15,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VehicleDtoResponse {
-    @NotBlank
     private int id;
 
-    @NotBlank
     private VehicleType vehicleType;
 
     private Set<ShipmentDtoResponse> shipments;
