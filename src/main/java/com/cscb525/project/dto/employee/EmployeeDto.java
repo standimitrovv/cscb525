@@ -18,12 +18,12 @@ public class EmployeeDto {
     @Size(min = 2, max = 25, message = "The 'name' field has to contain at least 2 and at most 25 characters!")
     private String name;
 
-    @NotNull(message = "The 'drivingQualification' field cannot be blank!")
+    @NotNull(message = "The 'drivingQualification' field cannot be null!")
     @Enumerated(EnumType.STRING)
     private DrivingQualification drivingQualification;
 
-    @NotNull(message = "The 'salary' field cannot be blank!")
+    @NotNull(message = "The 'salary' field cannot be null!")
     @DecimalMin(value = "1000.0", message = "The 'salary' field has to contain at least 4 digits")
-    @DecimalMax(value = "99999.0", message = "The 'salary' field has to contain at most 6 digits")
+    @DecimalMax(value = "99999.0", message = "The 'salary' field has to contain at most 5 digits")
     private double salary;
 }

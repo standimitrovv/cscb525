@@ -22,7 +22,7 @@ public class TransportCompanyRevenue {
     @Enumerated(EnumType.STRING)
     private Months forMonth;
 
-    @Column(nullable = false)
+    @Column(name = "company_revenue", nullable = false)
     private double revenue;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

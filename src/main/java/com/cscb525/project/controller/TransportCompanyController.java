@@ -16,6 +16,7 @@ import com.cscb525.project.model.transportCompany.FilterType;
 import com.cscb525.project.model.transportCompany.SortType;
 import com.cscb525.project.model.transportCompany.SortingAndFilteringCriteria;
 import com.cscb525.project.service.implementation.TransportCompanyServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -111,7 +112,7 @@ public class TransportCompanyController {
     @PostMapping("/{companyId}/revenue")
     public TransportCompanyDtoResponse addCompanyRevenue(
             @PathVariable int companyId,
-            @RequestBody TransportCompanyRevenueDto revenueDto
+            @RequestBody @Valid TransportCompanyRevenueDto revenueDto
     ){
         return this.transportCompanyServiceImpl.addCompanyRevenue(companyId, revenueDto);
     }
@@ -120,7 +121,7 @@ public class TransportCompanyController {
     public List<TransportCompanyRevenueDtoResponse> updateCompanyRevenue(
             @PathVariable int companyId,
             @PathVariable int revenueId,
-            @RequestBody TransportCompanyRevenueDto revenueDto
+            @RequestBody @Valid TransportCompanyRevenueDto revenueDto
     ) {
         return this.transportCompanyServiceImpl.updateCompanyRevenue(companyId, revenueId, revenueDto);
     }

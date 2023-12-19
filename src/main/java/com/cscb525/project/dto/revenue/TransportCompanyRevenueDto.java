@@ -1,7 +1,11 @@
 package com.cscb525.project.dto.revenue;
 
 import com.cscb525.project.model.revenue.Months;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +16,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransportCompanyRevenueDto {
-    @NotBlank
+    @NotNull(message = "The 'forMonth' field cannot be null!")
+    @Enumerated(EnumType.STRING)
     private Months forMonth;
 
-    @NotBlank
+    @NotNull(message = "The 'revenue' field cannot be null!")
+    @DecimalMin(value = "1000.0", message = "The 'revenue' field has to contain at least 4 digits")
+    @DecimalMax(value = "9999999.0", message = "The 'revenue' field has to contain at most 7 digits")
     private double revenue;
 }
