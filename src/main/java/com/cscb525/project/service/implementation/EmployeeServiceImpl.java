@@ -5,7 +5,7 @@ import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.exception.employee.EmployeeNotFoundException;
 import com.cscb525.project.model.employee.DrivingQualification;
 import com.cscb525.project.model.employee.Employee;
-import com.cscb525.project.model.employee.SortType;
+import com.cscb525.project.model.common.SortType;
 import com.cscb525.project.model.employee.SortingAndFilteringCriteria;
 import com.cscb525.project.model.transportCompany.FilterType;
 import com.cscb525.project.repository.EmployeeRepository;
@@ -13,9 +13,7 @@ import com.cscb525.project.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +31,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRepository;
         this.modelMapper = new ModelMapper();
     }
-
 
     public List<EmployeeDtoResponse> getAllEmployees(
             SortingAndFilteringCriteria filterBy,

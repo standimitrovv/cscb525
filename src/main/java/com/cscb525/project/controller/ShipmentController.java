@@ -1,9 +1,9 @@
 package com.cscb525.project.controller;
 
 import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
+import com.cscb525.project.model.common.SortType;
 import com.cscb525.project.model.shipment.CheckUpTypes;
 import com.cscb525.project.model.shipment.FilterType;
-import com.cscb525.project.model.shipment.SortType;
 import com.cscb525.project.model.shipment.SortingAndFilteringCriteria;
 import com.cscb525.project.service.implementation.ShipmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

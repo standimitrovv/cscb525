@@ -1,6 +1,6 @@
 package com.cscb525.project.dto.revenue;
 
-import com.cscb525.project.model.revenue.Months;
+import com.cscb525.project.model.common.Months;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.DecimalMax;

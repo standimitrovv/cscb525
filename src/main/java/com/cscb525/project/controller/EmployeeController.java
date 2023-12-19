@@ -3,7 +3,7 @@ package com.cscb525.project.controller;
 import com.cscb525.project.dto.employee.EmployeeDto;
 import com.cscb525.project.dto.employee.EmployeeDtoResponse;
 import com.cscb525.project.model.employee.DrivingQualification;
-import com.cscb525.project.model.employee.SortType;
+import com.cscb525.project.model.common.SortType;
 import com.cscb525.project.model.employee.SortingAndFilteringCriteria;
 import com.cscb525.project.model.transportCompany.FilterType;
 import com.cscb525.project.service.implementation.EmployeeServiceImpl;

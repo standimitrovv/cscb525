@@ -2,7 +2,6 @@ package com.cscb525.project.dto.shipment;
 
 import com.cscb525.project.model.shipment.CargoType;
 import com.cscb525.project.model.shipment.PaymentStatus;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

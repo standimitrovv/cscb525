@@ -1,4 +1,4 @@
-package com.cscb525.project.model.revenue;
+package com.cscb525.project.model.common;
 
 public enum Months {
     JAN,

@@ -1,7 +1,11 @@
 package com.cscb525.project.service.implementation;
 
 import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
-import com.cscb525.project.model.shipment.*;
+import com.cscb525.project.model.common.SortType;
+import com.cscb525.project.model.shipment.CheckUpTypes;
+import com.cscb525.project.model.shipment.FilterType;
+import com.cscb525.project.model.shipment.Shipment;
+import com.cscb525.project.model.shipment.SortingAndFilteringCriteria;
 import com.cscb525.project.repository.ShipmentRepository;
 import com.cscb525.project.service.ShipmentService;
 import org.modelmapper.ModelMapper;

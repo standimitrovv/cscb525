@@ -4,7 +4,6 @@ import com.cscb525.project.dto.shipment.ShipmentDtoResponse;
 import com.cscb525.project.model.employee.DrivingQualification;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

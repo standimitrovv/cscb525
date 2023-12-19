@@ -1,6 +1,6 @@
 package com.cscb525.project.dto.revenue;
 
-import com.cscb525.project.model.revenue.Months;
+import com.cscb525.project.model.common.Months;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TransportCompanyRevenueDtoResponse {
-    private Integer id;
+    private int id;
 
     private Months forMonth;
 

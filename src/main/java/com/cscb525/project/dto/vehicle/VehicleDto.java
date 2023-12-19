@@ -3,7 +3,6 @@ package com.cscb525.project.dto.vehicle;
 import com.cscb525.project.model.vehicle.VehicleType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
