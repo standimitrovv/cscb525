@@ -22,7 +22,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(name = "client_name", nullable = false)
     private String name;
 
     @JsonIgnore
