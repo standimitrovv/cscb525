@@ -6,6 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class TransportCompanyRevenueDto {
     private Months forMonth;
 
     @NotNull(message = "The 'revenue' field cannot be null!")
+    @Positive(message = "The 'revenue' must be bigger than 0")
     @DecimalMin(value = "1000.0", message = "The 'revenue' field has to contain at least 4 digits")
     @DecimalMax(value = "9999999.0", message = "The 'revenue' field has to contain at most 7 digits")
     private double revenue;

@@ -203,7 +203,7 @@ public class TransportCompanyController {
             @PathVariable int employeeId,
             @PathVariable int clientId,
             @PathVariable int vehicleId,
-            @RequestBody ShipmentDto shipmentDto
+            @RequestBody @Valid ShipmentDto shipmentDto
             ) {
         return this.transportCompanyServiceImpl.addShipment(companyId, employeeId, clientId, vehicleId, shipmentDto);
     }

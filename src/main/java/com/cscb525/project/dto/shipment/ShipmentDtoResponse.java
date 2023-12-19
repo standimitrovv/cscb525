@@ -15,29 +15,21 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShipmentDtoResponse {
-    @NotBlank
     private int id;
 
-    @NotBlank
     private String departurePoint;
 
-    @NotBlank
     private String destination;
 
-    @NotBlank
     private LocalDate departureDate;
 
-    @NotBlank
     private LocalDate arrivalDate;
 
-    @NotBlank
     private double price;
 
     private double cargoWeight;
 
-    @NotBlank
     private CargoType cargoType;
 
-    @NotBlank
     private PaymentStatus paymentStatus;
 }

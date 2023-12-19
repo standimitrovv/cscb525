@@ -23,6 +23,7 @@ public class EmployeeDto {
     private DrivingQualification drivingQualification;
 
     @NotNull(message = "The 'salary' field cannot be null!")
+    @Positive(message = "The 'salary' must be a number bigger than 0")
     @DecimalMin(value = "1000.0", message = "The 'salary' field has to contain at least 4 digits")
     @DecimalMax(value = "99999.0", message = "The 'salary' field has to contain at most 5 digits")
     private double salary;
