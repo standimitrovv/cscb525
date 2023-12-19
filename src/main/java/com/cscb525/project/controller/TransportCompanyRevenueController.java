@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/revenue")
+@RequestMapping("/revenues")
 public class TransportCompanyRevenueController {
     private final TransportCompanyRevenueServiceImpl revenueService;
 

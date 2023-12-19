@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/companies")
 public class TransportCompanyController {
     private final TransportCompanyServiceImpl transportCompanyServiceImpl;
 
