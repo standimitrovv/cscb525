@@ -53,20 +53,20 @@ public class TransportCompanyController {
 
     @GetMapping("/check-ups")
     public List<Object[]> getCompanyRevenueForMonth(
-            @RequestParam(name = "forMonth", required = true) Months forMonth
+            @RequestParam(name = "forMonth") Months forMonth
     ){
         return this.transportCompanyServiceImpl.getCompanyRevenueForMonth(forMonth);
     }
 
     @PostMapping
-    public TransportCompanyDtoResponse createNewTransportCompany(@RequestBody TransportCompanyDto transportCompany){
+    public TransportCompanyDtoResponse createNewTransportCompany(@RequestBody @Valid TransportCompanyDto transportCompany){
         return this.transportCompanyServiceImpl.createNewTransportCompany(transportCompany);
     }
 
     @PatchMapping("/{companyId}")
     public TransportCompanyDtoResponse updateTransportCompany(
             @PathVariable int companyId,
-            @RequestBody TransportCompanyDto transportCompanyDto
+            @RequestBody @Valid TransportCompanyDto transportCompanyDto
             ){
         return this.transportCompanyServiceImpl.updateTransportCompany(companyId, transportCompanyDto);
     }
@@ -87,7 +87,7 @@ public class TransportCompanyController {
     public TransportCompanyDtoResponse updateCompanyClient(
             @PathVariable int companyId,
             @PathVariable int clientId,
-            @RequestBody ClientDto clientDto){
+            @RequestBody @Valid ClientDto clientDto){
         return this.transportCompanyServiceImpl.updateCompanyClient(companyId, clientId, clientDto);
     }
 

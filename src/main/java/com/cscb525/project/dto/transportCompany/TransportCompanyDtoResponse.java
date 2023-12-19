@@ -20,10 +20,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class TransportCompanyDtoResponse {
 
-    @NotBlank
     private int id;
 
-    @NotBlank
     private String name;
 
     private Set<ClientDtoResponse> clients;
